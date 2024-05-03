@@ -5,7 +5,7 @@ class NotificationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Notifications Page', style: TextStyle(fontSize: 24, color: Colors.black)),
+        child: Text('Notification Page', style: TextStyle(fontSize: 24, color: Colors.black)),
       ),
     );
   }
