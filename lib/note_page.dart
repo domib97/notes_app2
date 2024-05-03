@@ -23,10 +23,11 @@ class MyApp extends StatelessWidget {
 
 class Note {
   final String content;
+  final String channel;
   final DateTime timestamp;
   final Color color;
 
-  Note(this.content, this.color) : timestamp = DateTime.now();
+  Note(this.content,this.channel, this.color) : timestamp = DateTime.now();
 }
 
 class NotePage extends StatefulWidget {
@@ -48,26 +49,51 @@ class _NotePageState extends State<NotePage> {
   final Random _random = Random();
 
   void _showAddNoteDialog() async {
-    TextEditingController controller = TextEditingController();
-    final String? returnedText = await showDialog<String>(
+    TextEditingController contentController = TextEditingController();
+    TextEditingController channelController = TextEditingController();
+
+    final bool? saved = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Jodel posten:'),
-          content: TextField(
-            controller: controller,
-            autofocus: true,
-            decoration: const InputDecoration(hintText: '#GoodVibesOnly'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
+            children: <Widget>[
+              // ConstrainedBox to set minimum height for TextField
+              ConstrainedBox(
+                constraints: BoxConstraints(minHeight: 60), // Set a minimum height for the text field
+                child: TextField(
+                  controller: channelController,
+                  decoration: InputDecoration(
+                    hintText: '@Channel',
+                    contentPadding: EdgeInsets.symmetric(vertical: 15.0), // Adds vertical padding inside the text field
+                  ),
+                ),
+              ),
+              SizedBox(height: 8), // Adds a bit of space between the two text fields
+              ConstrainedBox(
+                constraints: BoxConstraints(minHeight: 60), // Similarly, set a minimum height for the second text field
+                child: TextField(
+                  controller: contentController,
+                  autofocus: true,
+                  decoration: InputDecoration(
+                    hintText: '#GoodVibesOnly',
+                    contentPadding: EdgeInsets.symmetric(vertical: 15.0), // Same padding adjustment
+                  ),
+                ),
+              ),
+            ],
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, false),
               child: const Text('Abbrechen'),
             ),
             TextButton(
               onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  Navigator.pop(context, controller.text);
+                if (contentController.text.isNotEmpty && channelController.text.isNotEmpty) {
+                  Navigator.pop(context, true);
                 }
               },
               child: const Text('Speichern'),
@@ -77,13 +103,14 @@ class _NotePageState extends State<NotePage> {
       },
     );
 
-    if (returnedText != null && returnedText.isNotEmpty) {
+    if (saved == true) {
       setState(() {
-        _notes
-            .add(Note(returnedText, _colors[_random.nextInt(_colors.length)]));
+        _notes.add(
+            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)]));
       });
     }
   }
+
 
   void _removeNote(int index) async {
     final bool? confirmed = await showDialog<bool>(
@@ -129,9 +156,9 @@ class _NotePageState extends State<NotePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: ListTile(
-              leading: const Text('i'),
-              title: Text(DateFormat('kk:mm:ss - dd.MM.yyyy')
+              leading: Text(DateFormat('kk:mm:ss\nUTC+2')
                   .format(_notes[index].timestamp)),
+              title: Text(_notes[index].channel),
               isThreeLine: true,
               subtitle: Text(_notes[index].content),
               trailing: IconButton(
@@ -151,6 +178,7 @@ class _NotePageState extends State<NotePage> {
         tooltip: 'neuer Jodel',
         child: const Icon(Icons.add),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
