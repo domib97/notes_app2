@@ -53,7 +53,7 @@ class _NotePageState extends State<NotePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Jodel in folgenden\nChannel posten: #420'),
+          title: const Text('Jodel posten:'),
           content: TextField(
             controller: controller,
             autofocus: true,
