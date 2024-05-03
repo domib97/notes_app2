@@ -57,7 +57,7 @@ class _NotePageState extends State<NotePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Jodel posten:'),
+          title: Image.asset('assets/images/logo1.png'),
           content: Column(
             mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
             children: <Widget>[
@@ -156,6 +156,7 @@ class _NotePageState extends State<NotePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jodel 2.0'),
+        centerTitle: true,
       ),
       body: ListView.builder(
         itemCount: _notes.length,

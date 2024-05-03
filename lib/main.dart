@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Navigation Demo',
+      title: 'NotesApp2',
       theme: ThemeData.light(),
       home: Scaffold(
         body: Center(
@@ -62,6 +62,7 @@ class _MyAppState extends State<MyApp> {
           onTap: _onItemTapped,
         ),
       ),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
