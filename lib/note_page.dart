@@ -26,9 +26,9 @@ class Note {
   final String channel;
   final DateTime timestamp;
   final Color color;
-  int score;  // Score attribute
+  int karma;
 
-  Note(this.content, this.channel, this.color, {this.score = 0}) : timestamp = DateTime.now();
+  Note(this.content, this.channel, this.color, {this.karma = 0}) : timestamp = DateTime.now();
 }
 
 class NotePage extends StatefulWidget {
@@ -106,20 +106,20 @@ class _NotePageState extends State<NotePage> {
     if (saved == true) {
       setState(() {
         _notes.add(
-            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)], score: 0));
+            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)], karma: 0));
       });
     }
   }
 
-  void incrementScore(int index) {
+  void incrementKarma(int index) {
     setState(() {
-      _notes[index].score++;
+      _notes[index].karma++;
     });
   }
 
-  void decrementScore(int index) {
+  void decrementKarma(int index) {
     setState(() {
-      _notes[index].score--;
+      _notes[index].karma--;
     });
   }
 
@@ -169,19 +169,19 @@ class _NotePageState extends State<NotePage> {
             child: ListTile(
               leading: Text(DateFormat('kk:mm:ss\nUTC+2')
                   .format(_notes[index].timestamp)),
-              title: Text(_notes[index].channel),
-              subtitle: Text(_notes[index].content),
+              title: Text("@" + _notes[index].channel),
+              subtitle: Text(_notes[index].content, style: TextStyle(fontSize: 21)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.arrow_upward),
-                    onPressed: () => incrementScore(index),
+                    onPressed: () => incrementKarma(index),
                   ),
-                  Text('${_notes[index].score}'),
+                  Text('${_notes[index].karma}'),
                   IconButton(
                     icon: const Icon(Icons.arrow_downward),
-                    onPressed: () => decrementScore(index),
+                    onPressed: () => decrementKarma(index),
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
