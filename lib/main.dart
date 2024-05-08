@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'note_page.dart';
 import 'chat_page.dart';
-import 'notifications_page.dart';
+import 'inbox.dart';
 import 'settings_page.dart';
 
 void main() {
@@ -50,19 +50,19 @@ class _MyAppState extends State<MyApp> {
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.solidBell),
-              label: 'Notifications',
+              label: 'Inbox',
             ),
             BottomNavigationBarItem(
               icon: FaIcon(FontAwesomeIcons.gear),
               label: 'Settings',
             ),
           ],
-          currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.black,
-          unselectedFontSize: 9.5,
-          showUnselectedLabels: true,
-          selectedItemColor: Colors.green,
           onTap: _onItemTapped,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          unselectedFontSize: 9.0,
+          showUnselectedLabels: true,
         ),
       ),
       debugShowCheckedModeBanner: false,
