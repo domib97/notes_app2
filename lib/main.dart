@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'note_page.dart';
-import 'search_page.dart';
+import 'chat_page.dart';
 import 'notifications_page.dart';
 import 'settings_page.dart';
 
@@ -40,19 +41,19 @@ class _MyAppState extends State<MyApp> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: FaIcon(FontAwesomeIcons.house),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: FaIcon(FontAwesomeIcons.solidMessage),
+              label: 'Chats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
+              icon: FaIcon(FontAwesomeIcons.solidBell),
               label: 'Notifications',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: FaIcon(FontAwesomeIcons.gear),
               label: 'Settings',
             ),
           ],
