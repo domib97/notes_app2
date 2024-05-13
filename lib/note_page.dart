@@ -171,9 +171,9 @@ class _NotePageState extends State<NotePage> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 13, color: Colors.black)),
-                  const SizedBox(width: 8),
-                  Text(DateFormat('kk:mm:ss').format(_notes[index].timestamp), style: const TextStyle(fontSize: 10, color: Colors.black)),
+                  Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 15, color: Colors.black)),
+                  const SizedBox(width: 10),
+                  Text(DateFormat('kk:mm:ss').format(_notes[index].timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
                 ],
               ),
               subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 20, color: Colors.white)),
