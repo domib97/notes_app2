@@ -89,7 +89,7 @@ class _NotePageState extends State<NotePage> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Abbrechen'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -97,7 +97,7 @@ class _NotePageState extends State<NotePage> {
                   Navigator.pop(context, true);
                 }
               },
-              child: const Text('Speichern'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -129,16 +129,16 @@ class _NotePageState extends State<NotePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Löschen bestätigen'),
-          content: const Text('Sicher, dass Sie "ihren" Jodel löschen möchten?'),
+          title: const Text('Confirm deletion'),
+          content: const Text('Are you sure you want to delete ‘your’ Jodel?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Abbruch'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Löschen'),
+              child: const Text('Confirm'),
             ),
           ],
         );
@@ -208,7 +208,7 @@ class _NotePageState extends State<NotePage> {
         backgroundColor: Colors.green,
         hoverColor: Colors.pink,
         onPressed: _showAddNoteDialog,
-        tooltip: 'Neuer Jodel',
+        tooltip: 'New Jodel',
         child: const FaIcon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
