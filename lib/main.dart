@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'note_page.dart';
 import 'chat_page.dart';
-import 'inbox.dart';
+import 'inbox_page.dart';
 import 'settings_page.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class _MyAppState extends State<MyApp> {
   static final List<Widget> _widgetOptions = [
     const NotePage(),
     const ChatScreen(),
-    const NotificationsPage(),
+    const InboxPage(),
     const SettingsPage(),
   ];
 

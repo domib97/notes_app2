@@ -10,11 +10,13 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _darkMode = false;
   bool _notificationsEnabled = true;
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Settings'),
+        centerTitle: true,
       ),
       body: ListView(
         children: <Widget>[
