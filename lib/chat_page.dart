@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,7 +14,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: ChatScreen(),
+      home: const ChatScreen(),
     );
   }
 }
@@ -33,7 +35,7 @@ class _Message {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  List<_Message> _messages = [];
+  final List<_Message> _messages = [];
 
   void _handleSendMessage() {
     if (_messageController.text.isNotEmpty) {
@@ -52,7 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chats'),
+        title: const Text('Chats'),
         centerTitle: true,
       ),
       body: Column(
@@ -69,7 +71,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       if (!isMine)
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(right: 8),
                           child: Text(
                             'Partner:',
@@ -84,21 +86,21 @@ class _ChatScreenState extends State<ChatScreen> {
                               color: isMine ? Colors.blue : Colors.green,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
                             child: Text(
                               _messages[index].text,
-                              style: TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white),
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           Text(
                             '${_messages[index].timestamp.hour.toString().padLeft(2, '0')}:${_messages[index].timestamp.minute.toString().padLeft(2, '0')}',
-                            style: TextStyle(fontSize: 10, color: Colors.black),
+                            style: const TextStyle(fontSize: 10, color: Colors.black),
                           ),
                         ],
                       ),
                       if (isMine)
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(left: 8),
                           child: Text(
                             'Me',
@@ -111,21 +113,21 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          Divider(),
+          const Divider(),
           Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               children: <Widget>[
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       hintText: 'Type a message...',
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 FloatingActionButton(
                   onPressed: _handleSendMessage,
                   tooltip: 'Send',
