@@ -8,9 +8,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Chat App',
+      title: 'Chats',
       theme: ThemeData(
-
         primarySwatch: Colors.green,
       ),
       home: ChatScreen(),
@@ -53,7 +52,7 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Chat App'),
+        title: Text('Chats'),
         centerTitle: true,
       ),
       body: Column(
