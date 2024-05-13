@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter_animate/flutter_animate.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,19 +25,16 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
-  List<String> _messages = [];
-  final _colors = [
-    Colors.red,
-    Colors.green,
-    Colors.blue,
-    Colors.yellow,
-    Colors.purple,
-  ];
+  List<_Message> _messages = [];
 
   void _handleSendMessage() {
     if (_messageController.text.isNotEmpty) {
       setState(() {
-        _messages.add(_messageController.text);
+        _messages.add(_Message(
+          text: _messageController.text,
+          isMine: true,
+          timestamp: DateTime.now(),
+        ));
         _messageController.clear();
       });
     }
@@ -58,17 +54,43 @@ class _ChatScreenState extends State<ChatScreen> {
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: _colors[index % _colors.length],
-                        borderRadius: BorderRadius.circular(10),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _messages[index].isMine
+                          ? SizedBox.shrink()
+                          : Text(
+                        'Partner',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      ),
+                      Container(
+                        decoration: BoxDecoration(
+                          color: _messages[index].isMine ? Colors.blue : Colors.green,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              _messages[index].text,
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              '${_messages[index].timestamp.hour}:${_messages[index].timestamp.minute}',
+                              style: TextStyle(fontSize: 12, color: Colors.grey),
+                            ),
+                          ],
+                        ),
+                      ),
+                      _messages[index].isMine
+                          ? Text(
+                        'Me',
+                        style: TextStyle(fontSize: 12, color: Colors.grey),
+                      )
+                          : SizedBox.shrink(),
+                    ],
                   ),
-                  padding: EdgeInsets.all(16),
-                  child: Text(
-                    _messages[index],
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
                 );
               },
             ),
@@ -102,3 +124,10 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 }
 
+class _Message {
+  final String text;
+  final bool isMine;
+  final DateTime timestamp;
+
+  _Message({required this.text, required this.isMine, required this.timestamp});
+}
