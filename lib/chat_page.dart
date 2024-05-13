@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chat App',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: ChatScreen(),
     );
@@ -52,43 +52,50 @@ class _ChatScreenState extends State<ChatScreen> {
             child: ListView.builder(
               itemCount: _messages.length,
               itemBuilder: (context, index) {
+                final isMine = _messages[index].isMine;
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      _messages[index].isMine
-                          ? SizedBox.shrink()
-                          : Text(
-                        'Partner',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: _messages[index].isMine ? Colors.blue : Colors.green,
-                          borderRadius: BorderRadius.circular(10),
+                      if (!isMine)
+                        Padding(
+                          padding: EdgeInsets.only(right: 8),
+                          child: Text(
+                            'Partner:',
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
                         ),
-                        padding: EdgeInsets.all(16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
+                      Column(
+                        crossAxisAlignment: isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            decoration: BoxDecoration(
+                              color: isMine ? Colors.blue : Colors.green,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            child: Text(
                               _messages[index].text,
                               style: TextStyle(color: Colors.white),
                             ),
-                            Text(
-                              '${_messages[index].timestamp.hour}:${_messages[index].timestamp.minute}',
-                              style: TextStyle(fontSize: 12, color: Colors.grey),
-                            ),
-                          ],
-                        ),
+                          ),
+                          SizedBox(height: 5),
+                          Text(
+                            '${_messages[index].timestamp.hour.toString().padLeft(2, '0')}:${_messages[index].timestamp.minute.toString().padLeft(2, '0')}',
+                            style: TextStyle(fontSize: 10, color: Colors.black),
+                          ),
+                        ],
                       ),
-                      _messages[index].isMine
-                          ? Text(
-                        'Me',
-                        style: TextStyle(fontSize: 12, color: Colors.grey),
-                      )
-                          : SizedBox.shrink(),
+                      if (isMine)
+                        Padding(
+                          padding: EdgeInsets.only(left: 8),
+                          child: Text(
+                            'Me',
+                            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          ),
+                        ),
                     ],
                   ),
                 );
