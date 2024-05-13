@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
@@ -26,9 +27,9 @@ class Note {
   final String channel;
   final DateTime timestamp;
   final Color color;
-  int score;  // Score attribute
+  int karma;
 
-  Note(this.content, this.channel, this.color, {this.score = 0}) : timestamp = DateTime.now();
+  Note(this.content, this.channel, this.color, {this.karma = 0}) : timestamp = DateTime.now();
 }
 
 class NotePage extends StatefulWidget {
@@ -62,22 +63,22 @@ class _NotePageState extends State<NotePage> {
             mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
             children: <Widget>[
               ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 60),
+                constraints: const BoxConstraints(minHeight: 60),
                 child: TextField(
                   controller: channelController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '@Channel',
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 60),
+                constraints: const BoxConstraints(minHeight: 60),
                 child: TextField(
                   controller: contentController,
                   autofocus: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '#GoodVibesOnly',
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                   ),
@@ -88,7 +89,7 @@ class _NotePageState extends State<NotePage> {
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Abbrechen'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -96,7 +97,7 @@ class _NotePageState extends State<NotePage> {
                   Navigator.pop(context, true);
                 }
               },
-              child: const Text('Speichern'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -106,20 +107,20 @@ class _NotePageState extends State<NotePage> {
     if (saved == true) {
       setState(() {
         _notes.add(
-            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)], score: 0));
+            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)], karma: 0));
       });
     }
   }
 
-  void incrementScore(int index) {
+  void incrementKarma(int index) {
     setState(() {
-      _notes[index].score++;
+      _notes[index].karma++;
     });
   }
 
-  void decrementScore(int index) {
+  void decrementKarma(int index) {
     setState(() {
-      _notes[index].score--;
+      _notes[index].karma--;
     });
   }
 
@@ -128,16 +129,16 @@ class _NotePageState extends State<NotePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Löschen bestätigen'),
-          content: const Text('Sicher, dass Sie "ihren" Jodel löschen möchten?'),
+          title: const Text('Confirm deletion'),
+          content: const Text('Are you sure you want to delete ‘your’ Jodel?'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context, false),
-              child: const Text('Abbruch'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () => Navigator.pop(context, true),
-              child: const Text('Löschen'),
+              child: const Text('Confirm'),
             ),
           ],
         );
@@ -167,25 +168,33 @@ class _NotePageState extends State<NotePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: ListTile(
-              leading: Text(DateFormat('kk:mm:ss\nUTC+2')
-                  .format(_notes[index].timestamp)),
-              title: Text(_notes[index].channel),
-              subtitle: Text(_notes[index].content),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 15, color: Colors.black)),
+                  const SizedBox(width: 10),
+                  Text(DateFormat('kk:mm:ss').format(_notes[index].timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
+                ],
+              ),
+              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 20, color: Colors.white)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.arrow_upward),
-                    onPressed: () => incrementScore(index),
+                    icon: const FaIcon(FontAwesomeIcons.angleUp),
+                    onPressed: () => incrementKarma(index),
+                    color: Colors.black,
                   ),
-                  Text('${_notes[index].score}'),
+                  Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
                   IconButton(
-                    icon: const Icon(Icons.arrow_downward),
-                    onPressed: () => decrementScore(index),
+                    icon: const FaIcon(FontAwesomeIcons.angleDown),
+                    onPressed: () => decrementKarma(index),
+                    color: Colors.black,
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => _removeNote(index),
+                    color: Colors.red,
                   ),
                 ],
               ),
@@ -199,8 +208,8 @@ class _NotePageState extends State<NotePage> {
         backgroundColor: Colors.green,
         hoverColor: Colors.pink,
         onPressed: _showAddNoteDialog,
-        tooltip: 'Neuer Jodel',
-        child: const Icon(Icons.add),
+        tooltip: 'New Jodel',
+        child: const FaIcon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

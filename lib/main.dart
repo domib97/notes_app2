@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'note_page.dart';
-import 'search_page.dart';
-import 'notifications_page.dart';
+import 'chat_page.dart';
+import 'inbox.dart';
 import 'settings_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = [
-    NotePage(),
-    SearchPage(),
-    NotificationsPage(),
-    SettingsPage(),
+  static final List<Widget> _widgetOptions = [
+    const NotePage(),
+    const ChatScreen(),
+    const NotificationsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -40,26 +43,28 @@ class _MyAppState extends State<MyApp> {
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: FaIcon(FontAwesomeIcons.house),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+              icon: FaIcon(FontAwesomeIcons.solidMessage),
+              label: 'Chats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Notifications',
+              icon: FaIcon(FontAwesomeIcons.solidBell),
+              label: 'Inbox',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
+              icon: FaIcon(FontAwesomeIcons.gear),
               label: 'Settings',
             ),
           ],
-          currentIndex: _selectedIndex,
-          unselectedItemColor: Colors.black,
-          selectedItemColor: Colors.pink,
           onTap: _onItemTapped,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          unselectedFontSize: 9.0,
+          showUnselectedLabels: true,
         ),
       ),
       debugShowCheckedModeBanner: false,
