@@ -10,6 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Chat App',
       theme: ThemeData(
+
         primarySwatch: Colors.green,
       ),
       home: ChatScreen(),
@@ -21,6 +22,14 @@ class ChatScreen extends StatefulWidget {
   @override
   _ChatScreenState createState() => _ChatScreenState();
   const ChatScreen({super.key});
+}
+
+class _Message {
+  final String text;
+  final bool isMine;
+  final DateTime timestamp;
+
+  _Message({required this.text, required this.isMine, required this.timestamp});
 }
 
 class _ChatScreenState extends State<ChatScreen> {
@@ -45,6 +54,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Chat App'),
+        centerTitle: true,
       ),
       body: Column(
         children: <Widget>[
@@ -120,7 +130,10 @@ class _ChatScreenState extends State<ChatScreen> {
                 FloatingActionButton(
                   onPressed: _handleSendMessage,
                   tooltip: 'Send',
-                  child: Icon(Icons.send),
+                  splashColor: Colors.green,
+                  backgroundColor: Colors.green,
+                  hoverColor: Colors.pink,
+                  child: Icon(Icons.send_rounded),
                 ),
               ],
             ),
@@ -129,12 +142,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-}
-
-class _Message {
-  final String text;
-  final bool isMine;
-  final DateTime timestamp;
-
-  _Message({required this.text, required this.isMine, required this.timestamp});
 }
