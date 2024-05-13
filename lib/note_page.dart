@@ -168,7 +168,7 @@ class _NotePageState extends State<NotePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: ListTile(
-              leading: Text(DateFormat('kk:mm:ss\nUTC+2')
+              leading: Text(DateFormat('kk:mm:ss')
                   .format(_notes[index].timestamp)),
               title: Text("@${_notes[index].channel}"),
               subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 21)),
