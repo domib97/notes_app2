@@ -169,24 +169,27 @@ class _NotePageState extends State<NotePage> {
             ),
             child: ListTile(
               leading: Text(DateFormat('kk:mm:ss')
-                  .format(_notes[index].timestamp)),
-              title: Text("@${_notes[index].channel}"),
-              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 21)),
+                  .format(_notes[index].timestamp), style: const TextStyle(fontSize: 10, color: Colors.black)),
+              title: Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 13, color: Colors.black)),
+              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 22, color: Colors.white)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
-                    icon: const Icon(Icons.arrow_upward),
+                    icon: const FaIcon(FontAwesomeIcons.angleUp),
                     onPressed: () => incrementKarma(index),
+                      color: Colors.black,
                   ),
-                  Text('${_notes[index].karma}'),
+                  Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
                   IconButton(
-                    icon: const Icon(Icons.arrow_downward),
+                    icon: const FaIcon(FontAwesomeIcons.angleDown),
                     onPressed: () => decrementKarma(index),
+                    color: Colors.black,
                   ),
                   IconButton(
                     icon: const Icon(Icons.delete),
                     onPressed: () => _removeNote(index),
+                    color: Colors.red,
                   ),
                 ],
               ),
@@ -201,7 +204,7 @@ class _NotePageState extends State<NotePage> {
         hoverColor: Colors.pink,
         onPressed: _showAddNoteDialog,
         tooltip: 'Neuer Jodel',
-        child: FaIcon(FontAwesomeIcons.plus),
+        child: const FaIcon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

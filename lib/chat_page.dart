@@ -132,7 +132,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   splashColor: Colors.green,
                   backgroundColor: Colors.green,
                   hoverColor: Colors.pink,
-                  child: Icon(Icons.send_rounded),
+                  child: const Icon(Icons.send_rounded),
                 ),
               ],
             ),
