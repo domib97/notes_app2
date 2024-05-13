@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 void main() {
   runApp(MyApp());
@@ -45,9 +46,9 @@ class _InboxPageState extends State<InboxPage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Center(child: Text('Content of A')),
-                  Center(child: Text('Content of B')),
-                  Center(child: Text('Content of C')),
+                  Center(child: const Text('Content A', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
+                  Center(child: const Text('Content B', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
+                  Center(child: const Text('Content C', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
                 ],
               ),
             ),
