@@ -168,17 +168,22 @@ class _NotePageState extends State<NotePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: ListTile(
-              leading: Text(DateFormat('kk:mm:ss')
-                  .format(_notes[index].timestamp), style: const TextStyle(fontSize: 10, color: Colors.black)),
-              title: Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 13, color: Colors.black)),
-              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 22, color: Colors.white)),
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 13, color: Colors.black)),
+                  SizedBox(width: 8),
+                  Text(DateFormat('kk:mm:ss').format(_notes[index].timestamp), style: const TextStyle(fontSize: 10, color: Colors.black)),
+                ],
+              ),
+              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 20, color: Colors.white)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   IconButton(
                     icon: const FaIcon(FontAwesomeIcons.angleUp),
                     onPressed: () => incrementKarma(index),
-                      color: Colors.black,
+                    color: Colors.black,
                   ),
                   Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
                   IconButton(
