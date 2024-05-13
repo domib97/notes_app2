@@ -62,22 +62,22 @@ class _NotePageState extends State<NotePage> {
             mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
             children: <Widget>[
               ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 60),
+                constraints: const BoxConstraints(minHeight: 60),
                 child: TextField(
                   controller: channelController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '@Channel',
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                   ),
                 ),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               ConstrainedBox(
-                constraints: BoxConstraints(minHeight: 60),
+                constraints: const BoxConstraints(minHeight: 60),
                 child: TextField(
                   controller: contentController,
                   autofocus: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: '#GoodVibesOnly',
                     contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                   ),
@@ -167,10 +167,10 @@ class _NotePageState extends State<NotePage> {
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: ListTile(
-              leading: Text(DateFormat('kk:mm:ss')
+              leading: Text(DateFormat('kk:mm:ss\nUTC+2')
                   .format(_notes[index].timestamp)),
-              title: Text("@" + _notes[index].channel),
-              subtitle: Text(_notes[index].content, style: TextStyle(fontSize: 21)),
+              title: Text("@${_notes[index].channel}"),
+              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 21)),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[

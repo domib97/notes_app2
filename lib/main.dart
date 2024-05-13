@@ -6,21 +6,23 @@ import 'inbox.dart';
 import 'settings_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
-  static List<Widget> _widgetOptions = [
-    NotePage(),
-    SearchPage(),
-    NotificationsPage(),
-    SettingsPage(),
+  static final List<Widget> _widgetOptions = [
+    const NotePage(),
+    const ChatScreen(),
+    const NotificationsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
