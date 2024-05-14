@@ -36,7 +36,9 @@ class _InboxPageState extends State<InboxPage> {
         length: 3,
         child: Column(
           children: <Widget>[
-            TabBar(
+            const TabBar(
+              indicatorColor: Colors.green,
+              labelColor: Colors.green,
               tabs: [
                 Tab(text: 'A'),
                 Tab(text: 'B'),
