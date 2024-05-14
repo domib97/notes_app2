@@ -47,8 +47,8 @@ class _InboxPageState extends State<InboxPage> {
               child: TabBarView(
                 children: [
                   Center(child: const Text('Content A', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
-                  Center(child: const Text('Content B', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
-                  Center(child: const Text('Content C', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
+                  Center(child: const Text('Content B', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.cyanAccent)),
+                  Center(child: const Text('Content C', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.greenAccent)),
                 ],
               ),
             ),
