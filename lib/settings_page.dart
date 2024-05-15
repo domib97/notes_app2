@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -10,7 +11,12 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   bool _darkMode = false;
   bool _notificationsEnabled = true;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<void> _signOut() async {
+    await _auth.signOut();
+    Navigator.pushReplacementNamed(context, '/signin');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +56,6 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text('English'),
             trailing: const FaIcon(FontAwesomeIcons.angleRight),
             onTap: () {
-            // Navigate to language selection page
             },
           ),
           ListTile(
@@ -58,8 +63,12 @@ class _SettingsPageState extends State<SettingsPage> {
             subtitle: Text('Version 1.0'),
             trailing: const FaIcon(FontAwesomeIcons.circleInfo),
             onTap: () {
-            // Show about dialog
             },
+          ),
+          ListTile(
+            title: Text('Sign Out'),
+            trailing: Icon(Icons.logout),
+            onTap: _signOut,
           ),
         ],
       ),
