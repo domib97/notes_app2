@@ -185,7 +185,8 @@ class _NotePageState extends State<NotePage> {
                     onPressed: () => incrementKarma(index),
                     color: Colors.black,
                   ),
-                  Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
+                  Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)
+                  ),
                   IconButton(
                     icon: const FaIcon(FontAwesomeIcons.angleDown),
                     onPressed: () => decrementKarma(index),
