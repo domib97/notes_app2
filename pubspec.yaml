@@ -38,6 +38,8 @@ dependencies:
   firebase_core: ^2.31.0
   firebase_auth: ^4.19.5
   firebase_database: ^10.5.5
+  flutter_markdown: ^0.7.1
+  firebase_vertexai: ^0.1.0
 
 dev_dependencies:
   flutter_test:
