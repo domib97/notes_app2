@@ -3,6 +3,7 @@ import 'package:notes_app2/chat_page.dart';
 import 'package:notes_app2/login_page.dart';
 import 'package:notes_app2/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:notes_app2/main.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key, required this.isRegistering}) : super(key: key);
@@ -132,6 +133,13 @@ class _RegisterPageState extends State<RegisterPage> {
                 Navigator.of(context).push(LoginPage.route());
               },
               child: const Text('I already have an account'),
+            ),
+            formSpacer,
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).push(LoginPage.route());
+              },
+              child: const Text('Back'),
             )
           ],
         ),

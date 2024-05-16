@@ -54,7 +54,9 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
+      appBar: AppBar(title: const Text('Chat')
+
+      ),
       body: StreamBuilder<List<Message>>(
         stream: _messagesStream,
         builder: (context, snapshot) {
@@ -73,6 +75,7 @@ class _ChatPageState extends State<ChatPage> {
                     itemBuilder: (context, index) {
                       final message = messages[index];
 
+                      ///todo
                       /// I know it's not good to include code that is not related
                       /// to rendering the widget inside build method, but for
                       /// creating an app quick and dirty, it's fine 😂
@@ -126,7 +129,7 @@ class _MessageBarState extends State<_MessageBar> {
                   autofocus: true,
                   controller: _textController,
                   decoration: const InputDecoration(
-                    hintText: 'Type a message',
+                    hintText: '#GoodVibesOnly',
                     border: InputBorder.none,
                     focusedBorder: InputBorder.none,
                     contentPadding: EdgeInsets.all(8),
@@ -204,11 +207,11 @@ class _ChatBubble extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: message.isMine
-                ? Theme.of(context).primaryColor
-                : Colors.grey[300],
+                ? Colors.orange
+                : Colors.green,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(message.content),
+          child: Text(message.content, style: const TextStyle(fontSize: 18, color: Colors.white)),
         ),
       ),
       const SizedBox(width: 12),
