@@ -1,7 +1,5 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-
 import 'package:notes_app2/message.dart';
 import 'package:notes_app2/profile.dart';
 import 'package:notes_app2/constants.dart';
@@ -9,10 +7,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:timeago/timeago.dart';
 
 /// Page to chat with someone.
-///
 /// Displays chat bubbles as a ListView and TextField to enter new chat.
 class ChatPage extends StatefulWidget {
-  const ChatPage({Key? key}) : super(key: key);
+  const ChatPage({super.key});
+  //const ChatPage({Key? key}) : super(key: key);
 
   static Route<void> route() {
     return MaterialPageRoute(
