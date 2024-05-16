@@ -37,10 +37,25 @@ class _RegisterPageState extends State<RegisterPage> {
     final password = _passwordController.text;
     final username = _usernameController.text;
     try {
-      await supabase.auth.signUp(
-          email: email, password: password, data: {'username': username});
-      Navigator.of(context)
-          .pushAndRemoveUntil(ChatPage.route(), (route) => false);
+      // Sign up the user
+      final signUpResponse = await supabase.auth.signUp(email: email, password: password, data: {'username': username});
+
+      if (signUpResponse.user == null) {
+        // Handle the error if the user is null
+        context.showErrorSnackBar(message: 'Error during sign up. Please try again.');
+        return;
+      }
+
+      // Log in the user manually
+      final signInResponse = await supabase.auth.signInWithPassword(email: email, password: password);
+
+      // Check if sign-in was successful by verifying the session
+      if (signInResponse.session != null) {
+        Navigator.of(context).pushAndRemoveUntil(ChatPage.route(), (route) => false);
+      } else {
+        // Handle the error if the session is null
+        context.showErrorSnackBar(message: 'Error during sign in. Please try again.');
+      }
     } on AuthException catch (error) {
       context.showErrorSnackBar(message: error.message);
     } catch (error) {

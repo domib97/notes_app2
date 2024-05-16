@@ -65,19 +65,21 @@ final appTheme = ThemeData.light().copyWith(
 
 /// Set of extension methods to easily display a snackbar
 extension ShowSnackBar on BuildContext {
-  /// Displays a basic snackbar
-  void showSnackBar({
-    required String message,
-    Color backgroundColor = Colors.white,
-  }) {
-    ScaffoldMessenger.of(this).showSnackBar(SnackBar(
-      content: Text(message),
-      backgroundColor: backgroundColor,
-    ));
+  void showErrorSnackBar({required String message}) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
-  /// Displays a red snackbar indicating error
-  void showErrorSnackBar({required String message}) {
-    showSnackBar(message: message, backgroundColor: Colors.red);
+  void showSuccessSnackBar({required String message}) {
+    ScaffoldMessenger.of(this).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.green,
+      ),
+    );
   }
 }

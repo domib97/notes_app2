@@ -5,7 +5,8 @@ import 'chat_page.dart';
 import 'inbox_page.dart';
 import 'settings_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:notes_app2/constants.dart';
+import 'constants.dart';
+import 'splash_page.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
@@ -44,37 +45,13 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'NotesApp2',
       theme: ThemeData.light(),
-      home: Scaffold(
-        body: Center(
-          child: _widgetOptions.elementAt(_selectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.house),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.solidMessage),
-              label: 'Chats',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.solidBell),
-              label: 'Inbox',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.gear),
-              label: 'Settings',
-            ),
-          ],
-          onTap: _onItemTapped,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.grey,
-          unselectedFontSize: 9.0,
-          showUnselectedLabels: true,
-        ),
-      ),
+      home: const SplashPage(), // Set SplashPage as the initial route
+      routes: {
+        '/note': (context) => const NotePage(),
+        '/chat': (context) => const ChatPage(),
+        '/inbox': (context) => const InboxPage(),
+        '/settings': (context) => const SettingsPage(),
+      },
       debugShowCheckedModeBanner: false,
     );
   }
