@@ -128,6 +128,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
+
                 FloatingActionButton(
                   onPressed: _handleSendMessage,
                   tooltip: 'Send',

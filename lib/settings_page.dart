@@ -62,7 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
             title: Text('About'),
             subtitle: Text('Version 1.0'),
             trailing: const FaIcon(FontAwesomeIcons.circleInfo),
-            onTap: () {
+            onTap: () { //todo About
             },
           ),
           ListTile(
