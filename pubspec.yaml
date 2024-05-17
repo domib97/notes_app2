@@ -38,6 +38,7 @@ dependencies:
   supabase_flutter: ^2.5.3
   timeago: ^3.6.1
   flutter_bloc: ^8.1.5
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
