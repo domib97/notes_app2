@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dilo/auth/google_auth.dart';
-import 'package:dilo/data/counsellors.dart';
-import 'package:dilo/pages/my_bookmarks.dart';
-import 'package:dilo/pages/my_posts.dart';
-import 'package:dilo/utils/colors.dart';
-import 'package:dilo/widgets/promo_card.dart';
+import 'package:notes_app2/inspiration/2/auth/google_auth.dart';
+import 'package:notes_app2/inspiration/2/data/counsellors.dart';
+import 'package:notes_app2/inspiration/2/pages/my_bookmarks.dart';
+import 'package:notes_app2/inspiration/2/pages/my_posts.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/widgets/promo_card.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';

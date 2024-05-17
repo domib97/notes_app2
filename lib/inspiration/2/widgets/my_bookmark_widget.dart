@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dilo/pages/post_details.dart';
-import 'package:dilo/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/pages/post_details.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';

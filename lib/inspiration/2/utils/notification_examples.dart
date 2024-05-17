@@ -1,4 +1,4 @@
-import 'package:dilo/utils/notification_types.dart';
+import 'package:notes_app2/inspiration/2/utils/notification_types.dart';
 
 List notifications = [
   {

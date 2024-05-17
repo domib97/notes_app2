@@ -1,5 +1,5 @@
-import 'package:dilo/utils/notification_examples.dart';
-import 'package:dilo/widgets/single_notification.dart';
+import 'package:notes_app2/inspiration/2/utils/notification_examples.dart';
+import 'package:notes_app2/inspiration/2/widgets/single_notification.dart';
 import 'package:flutter/material.dart';
 
 class NotificationsPage extends StatelessWidget {

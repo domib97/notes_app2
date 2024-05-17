@@ -1,5 +1,5 @@
-import 'package:dilo/pages/register.dart';
-import 'package:dilo/root_app.dart';
+import 'package:notes_app2/inspiration/2/pages/register.dart';
+import 'package:notes_app2/inspiration/2/root_app.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 

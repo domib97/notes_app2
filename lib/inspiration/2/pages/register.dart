@@ -1,5 +1,5 @@
-import 'package:dilo/utils/colors.dart';
-import 'package:dilo/widgets/auth_button.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/widgets/auth_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -47,7 +47,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 25),
             const Text(
-              'Welcome to Dilo',
+              'Welcome to notes_app2/inspiration/2',
               style: TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: Theme.of(context).textTheme.titleLarge!.copyWith(),
                 children: const [
                   TextSpan(
-                    text: " Dilo",
+                    text: " notes_app2/inspiration/2",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       backgroundColor: AppColors.red,

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dilo/pages/create_post.dart';
-import 'package:dilo/utils/colors.dart';
-import 'package:dilo/widgets/post.dart';
+import 'package:notes_app2/inspiration/2/pages/create_post.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/widgets/post.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 

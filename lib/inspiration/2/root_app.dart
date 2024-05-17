@@ -1,7 +1,7 @@
-import 'package:dilo/pages/home.dart';
-import 'package:dilo/pages/notifications.dart';
-import 'package:dilo/pages/profile.dart';
-import 'package:dilo/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/pages/home.dart';
+import 'package:notes_app2/inspiration/2/pages/notifications.dart';
+import 'package:notes_app2/inspiration/2/pages/profile.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 

@@ -1,4 +1,4 @@
-import 'package:dilo/auth/google_auth.dart';
+import 'package:notes_app2/inspiration/2/auth/google_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';

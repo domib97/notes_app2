@@ -1,4 +1,4 @@
-import 'package:dilo/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class PromoCard extends StatelessWidget {
@@ -59,7 +59,7 @@ class PromoCard extends StatelessWidget {
                 top: 5,
               ),
               child: Text(
-                "Enjoy 3 colored post every week and unlock many more DILO Plus Powers!",
+                "Enjoy 3 colored post every week and unlock many more notes_app2/inspiration/2 Plus Powers!",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 16,

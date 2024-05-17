@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dilo/widgets/empty_page.dart';
-import 'package:dilo/widgets/my_post_widget.dart';
+import 'package:notes_app2/inspiration/2/widgets/empty_page.dart';
+import 'package:notes_app2/inspiration/2/widgets/my_post_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';

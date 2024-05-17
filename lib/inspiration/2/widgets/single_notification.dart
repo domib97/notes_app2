@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:dilo/utils/colors.dart';
-import 'package:dilo/utils/notification_types.dart';
+import 'package:notes_app2/inspiration/2/utils/colors.dart';
+import 'package:notes_app2/inspiration/2/utils/notification_types.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 
