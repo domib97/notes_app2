@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         tabBarTheme: const TabBarTheme(
-          labelColor: Colors.white,
+          labelColor: Colors.green,
           labelStyle: TextStyle(color: Colors.grey), // Farbe für Text
         ),
         primarySwatch: Colors.blue,
@@ -42,19 +42,19 @@ class MyHomePage extends StatelessWidget {
             bottom: const TabBar(
               tabs: [
                 Tab(
-                  icon: Icon(Icons.home, color: Colors.white),
+                  icon: Icon(Icons.home, color: Colors.green),
                   child: Text('Home', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 Tab(
-                  icon: Icon(Icons.account_balance, color: Colors.white),
+                  icon: Icon(Icons.account_balance, color: Colors.green),
                   child: Text('Konto', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 Tab(
-                  icon: Icon(Icons.calculate, color: Colors.white),
+                  icon: Icon(Icons.calculate, color: Colors.green),
                   child: Text('Umsätze', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
                 Tab(
-                  icon: Icon(Icons.credit_score, color: Colors.white),
+                  icon: Icon(Icons.credit_score, color: Colors.green),
                   child: Text('Karte', style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],

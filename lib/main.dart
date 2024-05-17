@@ -7,6 +7,7 @@ import 'settings_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants.dart';
 import 'splash_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   await Supabase.initialize(
