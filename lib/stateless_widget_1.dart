@@ -12,9 +12,8 @@ class MyApp extends StatelessWidget{
 
   @override
   Widget build(BuildContext context){
-    const title = _title,
-    home: MyStatelessWidget(),
-    );
+    const title = _title;
+    home: const MyStatelessWidget();
   }
 }
 
@@ -26,16 +25,16 @@ class MyStatelessWidget extends StatelessWidget{
     return Scaffold(
       appBar: AppBar(
         title: const Text('Scaffold-Bsp'),
-        backgroundColor: Colors.cyan
-        bottomNavigationBar: const BottomAppBar(
+        backgroundColor: Colors.cyan,
+        /*bottomNavigationBar: const BottomAppBar(
           color: Colors.cyanAccent,
           shape: CircularNotchedRectangle(),
           child: SizedBox(
             height: 300,
             child:  Center(child:Text("bottom_nav_bar")),
         ),
-      ),
-      body: _buildCardWidget(),
+      ),*/
+      //body: _buildCardWidget(),
       ));
   }
 
