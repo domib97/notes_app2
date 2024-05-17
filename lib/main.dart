@@ -4,6 +4,7 @@ import 'note_page.dart';
 import 'chat_page.dart';
 import 'inbox_page.dart';
 import 'settings_page.dart';
+import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants.dart';
 import 'splash_page.dart';
