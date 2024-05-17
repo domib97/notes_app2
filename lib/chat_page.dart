@@ -20,9 +20,10 @@ class MyApp extends StatelessWidget {
 }
 
 class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
   @override
   _ChatScreenState createState() => _ChatScreenState();
-  const ChatScreen({super.key});
 }
 
 class _Message {
@@ -113,9 +114,10 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          const Divider(),
+          const Divider(height: 1),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(8),
+            color: Colors.white,
             child: Row(
               children: <Widget>[
                 Expanded(
@@ -128,13 +130,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   ),
                 ),
                 const SizedBox(width: 8),
-
                 FloatingActionButton(
                   onPressed: _handleSendMessage,
                   tooltip: 'Send',
-                  splashColor: Colors.green,
                   backgroundColor: Colors.green,
-                  hoverColor: Colors.pink,
                   child: const Icon(Icons.send_rounded),
                 ),
               ],

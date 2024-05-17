@@ -1,49 +1,54 @@
 import 'package:flutter/material.dart';
 
-void main(){
+void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget{
-  const MyApp({Key? key}):super(key: key);
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   static const String _title = 'Beispiel';
 
-
   @override
-  Widget build(BuildContext context){
-    const title = _title;
-    home: const MyStatelessWidget();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: _title,
+      theme: ThemeData(
+        primarySwatch: Colors.cyan,
+      ),
+      home: const MyStatelessWidget(),
+    );
   }
 }
 
-class MyStatelessWidget extends StatelessWidget{
+class MyStatelessWidget extends StatelessWidget {
   const MyStatelessWidget({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Scaffold-Bsp'),
         backgroundColor: Colors.cyan,
-        /*bottomNavigationBar: const BottomAppBar(
-          color: Colors.cyanAccent,
-          shape: CircularNotchedRectangle(),
-          child: SizedBox(
-            height: 300,
-            child:  Center(child:Text("bottom_nav_bar")),
+      ),
+      bottomNavigationBar: const BottomAppBar(
+        color: Colors.cyanAccent,
+        shape: CircularNotchedRectangle(),
+        child: SizedBox(
+          height: 50,
+          child: Center(child: Text("bottom_nav_bar")),
         ),
-      ),*/
-      //body: _buildCardWidget(),
-      ));
+      ),
+      body: _buildCardWidget(),
+    );
   }
 
-  Widget _buildCardWidget(){
+  Widget _buildCardWidget() {
     return const SizedBox(
       height: 200,
       child: Card(
         child: Center(
-          child: Text('Oberste ard'),
+          child: Text('Oberste Card'),
         ),
       ),
     );
