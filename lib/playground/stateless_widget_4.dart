@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app2/stateless_widget_1.dart';
+import 'package:notes_app2/playground/stateless_widget_1.dart';
 
 void main() {
   runApp(const MyApp());
