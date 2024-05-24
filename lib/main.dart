@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'note_page.dart';
-import 'chat_page.dart';
-import 'inbox_page.dart';
-import 'settings_page.dart';
+import 'pages/note_page.dart';
+import 'pages/chat_page.dart';
+import 'pages/inbox_page.dart';
+import 'pages/settings_page.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'constants.dart';
-import 'splash_page.dart';
+import 'pages/splash_page.dart';
 
 Future<void> main() async {
   await Supabase.initialize(

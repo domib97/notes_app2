@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app2/chat_page.dart';
+import 'package:notes_app2/pages/chat_page.dart';
 import 'package:notes_app2/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
