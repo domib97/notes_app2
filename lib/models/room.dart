@@ -1,4 +1,4 @@
-import 'package:notes_app2/message.dart';
+import 'package:notes_app2/models/message.dart';
 
 class Room {
   Room({

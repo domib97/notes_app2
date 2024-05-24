@@ -1,9 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:notes_app2/pages/chat_page.dart';
 import 'package:notes_app2/pages/login_page.dart';
-import 'package:notes_app2/constants.dart';
+import 'package:notes_app2/pages/rooms_page.dart';
+import 'package:notes_app2/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:notes_app2/main.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key, required this.isRegistering}) : super(key: key);
@@ -21,13 +22,38 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
+
+  late final StreamSubscription<AuthState> _authSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+
+    bool haveNavigated = false;
+    // Listen to auth state to redirect user when the user clicks on confirmation link
+    _authSubscription = supabase.auth.onAuthStateChange.listen((data) {
+      final session = data.session;
+      if (session != null && !haveNavigated) {
+        haveNavigated = true;
+        Navigator.of(context).pushReplacement(RoomsPage.route());
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    // Dispose subscription when no longer needed
+    _authSubscription.cancel();
+  }
 
   Future<void> _signUp() async {
     final isValid = _formKey.currentState!.validate();
@@ -37,30 +63,32 @@ class _RegisterPageState extends State<RegisterPage> {
     final email = _emailController.text;
     final password = _passwordController.text;
     final username = _usernameController.text;
+    setState(() {
+      _isLoading = true;
+    });
     try {
-      // Sign up the user
-      final signUpResponse = await supabase.auth.signUp(email: email, password: password, data: {'username': username});
-
-      if (signUpResponse.user == null) {
-        // Handle the error if the user is null
-        context.showErrorSnackBar(message: 'Error during sign up. Please try again.');
-        return;
-      }
-
-      // Log in the user manually
-      final signInResponse = await supabase.auth.signInWithPassword(email: email, password: password);
-
-      // Check if sign-in was successful by verifying the session
-      if (signInResponse.session != null) {
-        Navigator.of(context).pushAndRemoveUntil(ChatPage.route(), (route) => false);
-      } else {
-        // Handle the error if the session is null
-        context.showErrorSnackBar(message: 'Error during sign in. Please try again.');
-      }
+      await supabase.auth.signUp(
+        email: email,
+        password: password,
+        data: {'username': username},
+        emailRedirectTo: 'io.supabase.chat://login',
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please check your inbox for confirmation email.')),
+      );
     } on AuthException catch (error) {
-      context.showErrorSnackBar(message: error.message);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.message)),
+      );
     } catch (error) {
-      context.showErrorSnackBar(message: unexpectedErrorMessage);
+      debugPrint(error.toString());
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(unexpectedErrorMessage)),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -134,13 +162,6 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               child: const Text('I already have an account'),
             ),
-            formSpacer,
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).push(LoginPage.route());
-              },
-              child: const Text('Back'),
-            )
           ],
         ),
       ),

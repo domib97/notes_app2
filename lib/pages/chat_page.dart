@@ -1,99 +1,73 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:notes_app2/message.dart';
-import 'package:notes_app2/profile.dart';
-import 'package:notes_app2/constants.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:notes_app2/components/user_avatar.dart';
+import 'package:notes_app2/cubits/chat/chat_cubit.dart';
+
+import 'package:notes_app2/models/message.dart';
+import 'package:notes_app2/utils/constants.dart';
 import 'package:timeago/timeago.dart';
 
 /// Page to chat with someone.
+///
 /// Displays chat bubbles as a ListView and TextField to enter new chat.
-class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
-  //const ChatPage({Key? key}) : super(key: key);
+class ChatPage extends StatelessWidget {
+  const ChatPage({Key? key}) : super(key: key);
 
-  static Route<void> route() {
+  static Route<void> route(String roomId) {
     return MaterialPageRoute(
-      builder: (context) => const ChatPage(),
+      builder: (context) => BlocProvider<ChatCubit>(
+        create: (context) => ChatCubit()..setMessagesListener(roomId),
+        child: const ChatPage(),
+      ),
     );
-  }
-
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
-  late final Stream<List<Message>> _messagesStream;
-  final Map<String, Profile> _profileCache = {};
-
-  @override
-  void initState() {
-    final myUserId = supabase.auth.currentUser!.id;
-    _messagesStream = supabase
-        .from('messages')
-        .stream(primaryKey: ['id'])
-        .order('created_at')
-        .map((maps) => maps
-        .map((map) => Message.fromMap(map: map, myUserId: myUserId))
-        .toList());
-    super.initState();
-  }
-
-  Future<void> _loadProfileCache(String profileId) async {
-    if (_profileCache[profileId] != null) {
-      return;
-    }
-    final data =
-    await supabase.from('profiles').select().eq('id', profileId).single();
-    final profile = Profile.fromMap(data);
-    setState(() {
-      _profileCache[profileId] = profile;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')
-
-      ),
-      body: StreamBuilder<List<Message>>(
-        stream: _messagesStream,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final messages = snapshot.data!;
+      appBar: AppBar(title: const Text('Chat')),
+      body: BlocConsumer<ChatCubit, ChatState>(
+        listener: (context, state) {
+          if (state is ChatError) {
+            context.showErrorSnackBar(message: state.message);
+          }
+        },
+        builder: (context, state) {
+          if (state is ChatInitial) {
+            return preloader;
+          } else if (state is ChatLoaded) {
+            final messages = state.messages;
             return Column(
               children: [
                 Expanded(
-                  child: messages.isEmpty
-                      ? const Center(
-                    child: Text('Start your conversation now :)'),
-                  )
-                      : ListView.builder(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
                     reverse: true,
                     itemCount: messages.length,
                     itemBuilder: (context, index) {
                       final message = messages[index];
-
-                      ///todo
-                      /// I know it's not good to include code that is not related
-                      /// to rendering the widget inside build method, but for
-                      /// creating an app quick and dirty, it's fine 😂
-                      _loadProfileCache(message.profileId);
-
-                      return _ChatBubble(
-                        message: message,
-                        profile: _profileCache[message.profileId],
-                      );
+                      return _ChatBubble(message: message);
                     },
                   ),
                 ),
                 const _MessageBar(),
               ],
             );
-          } else {
-            return preloader;
+          } else if (state is ChatEmpty) {
+            return Column(
+              children: const [
+                Expanded(
+                  child: Center(
+                    child: Text('Start your conversation now :)'),
+                  ),
+                ),
+                _MessageBar(),
+              ],
+            );
+          } else if (state is ChatError) {
+            return Center(child: Text(state.message));
           }
+          throw UnimplementedError();
         },
       ),
     );
@@ -116,32 +90,35 @@ class _MessageBarState extends State<_MessageBar> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.grey[200],
-      child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  keyboardType: TextInputType.text,
-                  maxLines: null,
-                  autofocus: true,
-                  controller: _textController,
-                  decoration: const InputDecoration(
-                    hintText: '#GoodVibesOnly',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    contentPadding: EdgeInsets.all(8),
-                  ),
+      color: Theme.of(context).cardColor,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: 8,
+          left: 8,
+          right: 8,
+          bottom: MediaQuery.of(context).padding.bottom,
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: TextFormField(
+                keyboardType: TextInputType.text,
+                maxLines: null,
+                autofocus: true,
+                controller: _textController,
+                decoration: const InputDecoration(
+                  hintText: 'Type a message',
+                  border: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  contentPadding: EdgeInsets.all(8),
                 ),
               ),
-              TextButton(
-                onPressed: () => _submitMessage(),
-                child: const Text('Send'),
-              ),
-            ],
-          ),
+            ),
+            TextButton(
+              onPressed: () => _submitMessage(),
+              child: const Text('Send'),
+            ),
+          ],
         ),
       ),
     );
@@ -161,21 +138,11 @@ class _MessageBarState extends State<_MessageBar> {
 
   void _submitMessage() async {
     final text = _textController.text;
-    final myUserId = supabase.auth.currentUser!.id;
     if (text.isEmpty) {
       return;
     }
+    BlocProvider.of<ChatCubit>(context).sendMessage(text);
     _textController.clear();
-    try {
-      await supabase.from('messages').insert({
-        'profile_id': myUserId,
-        'content': text,
-      });
-    } on PostgrestException catch (error) {
-      context.showErrorSnackBar(message: error.message);
-    } catch (_) {
-      context.showErrorSnackBar(message: unexpectedErrorMessage);
-    }
   }
 }
 
@@ -183,21 +150,14 @@ class _ChatBubble extends StatelessWidget {
   const _ChatBubble({
     Key? key,
     required this.message,
-    required this.profile,
   }) : super(key: key);
 
   final Message message;
-  final Profile? profile;
 
   @override
   Widget build(BuildContext context) {
     List<Widget> chatContents = [
-      if (!message.isMine)
-        CircleAvatar(
-          child: profile == null
-              ? preloader
-              : Text(profile!.username.substring(0, 2)),
-        ),
+      if (!message.isMine) UserAvatar(userId: message.profileId),
       const SizedBox(width: 12),
       Flexible(
         child: Container(
@@ -207,11 +167,11 @@ class _ChatBubble extends StatelessWidget {
           ),
           decoration: BoxDecoration(
             color: message.isMine
-                ? Colors.orange
-                : Colors.green,
+                ? Colors.grey[300]
+                : Theme.of(context).primaryColor,
             borderRadius: BorderRadius.circular(8),
           ),
-          child: Text(message.content, style: const TextStyle(fontSize: 18, color: Colors.white)),
+          child: Text(message.content),
         ),
       ),
       const SizedBox(width: 12),

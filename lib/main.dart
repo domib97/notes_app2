@@ -6,10 +6,13 @@ import 'pages/inbox_page.dart';
 import 'pages/settings_page.dart';
 import 'firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'constants.dart';
-import 'pages/splash_page.dart';
+import 'package:notes_app2/cubits/profiles/profiles_cubit.dart';
+import 'package:notes_app2/utils/constants.dart';
+import 'package:notes_app2/pages/splash_page.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await Supabase.initialize(
     // TODO: Replace credentials with your own
     url: 'https://ktastyizlblacjbjjpmr.supabase.co',
