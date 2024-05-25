@@ -1,0 +1,53 @@
+W/RemoteInputConnectionImpl(11660): getSurroundingText on inactive InputConnection
+D/InsetsController(11660): show(ime(), fromIme=true)
+D/EGL_emulation(11660): app_time_stats: avg=147.79ms min=4.96ms max=497.98ms count=9
+D/InputMethodManager(11660): showSoftInput() view=io.flutter.embedding.android.FlutterView{a66949 VFE...... .F...... 0,0-1080,2337 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/TextInputPlugin(11660): Composing region changed by the framework. Restarting the input method.
+D/InsetsController(11660): show(ime(), fromIme=true)
+W/RemoteInputConnectionImpl(11660): getSurroundingText on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getTextBeforeCursor on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getTextBeforeCursor on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getSurroundingText on inactive InputConnection
+D/InsetsController(11660): show(ime(), fromIme=true)
+D/InputMethodManager(11660): showSoftInput() view=io.flutter.embedding.android.FlutterView{a66949 VFE...... .F...... 0,0-1080,2337 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/TextInputPlugin(11660): Composing region changed by the framework. Restarting the input method.
+D/InsetsController(11660): show(ime(), fromIme=true)
+W/RemoteInputConnectionImpl(11660): getSurroundingText on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getTextBeforeCursor on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getTextBeforeCursor on inactive InputConnection
+W/RemoteInputConnectionImpl(11660): getSurroundingText on inactive InputConnection
+D/InsetsController(11660): show(ime(), fromIme=true)
+D/EGL_emulation(11660): app_time_stats: avg=283.34ms min=4.45ms max=503.17ms count=5
+D/EGL_emulation(11660): app_time_stats: avg=501.18ms min=499.76ms max=502.60ms count=2
+D/EGL_emulation(11660): app_time_stats: avg=34.49ms min=8.97ms max=439.44ms count=29
+D/EGL_emulation(11660): app_time_stats: avg=115.45ms min=14.73ms max=501.55ms count=13
+D/EGL_emulation(11660): app_time_stats: avg=83.23ms min=14.65ms max=499.97ms count=18
+D/EGL_emulation(11660): app_time_stats: avg=500.08ms min=499.82ms max=500.34ms count=2
+D/EGL_emulation(11660): app_time_stats: avg=475.01ms min=428.17ms max=499.76ms count=3
+
+
+||
+---------\
+---------/
+||
+
+
+D/com.llfbandit.app_links(11660): Intent { act=android.intent.action.VIEW cat=[android.intent.category.BROWSABLE] dat=io.supabase.chat://login/... flg=0x14400000 cmp=com.domib97.notes_app2/.MainActivity (has extras) }
+
+D/com.llfbandit.app_links(11660): Handled intent: action: android.intent.action.VIEW / data: io.supabase.chat://login?code=74447b0e-587a-4605-b004-89fcde869ac1
+
+I/flutter (11660): ***** SupabaseAuthState handleDeeplink io.supabase.chat://login?code=74447b0e-587a-4605-b004-89fcde869ac1
+I/flutter (11660): onReceivedAuthDeeplink uri: io.supabase.chat://login?code=74447b0e-587a-4605-b004-89fcde869ac1
+I/flutter (11660): **** onAuthStateChange: AuthChangeEvent.signedIn
+I/flutter (11660):
+
+{"access_token":"eyJhbGciOiJIUzI1NiIsImtpZCI6ImZMYTYybVZ4SmxaMCs5WisiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzE2NjA0MDkxLCJpYXQiOjE3MTY2MDA0OTEsImlzcyI6Imh0dHBzOi8va3Rhc3R5aXpsYmxhY2piampwbXIuc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjE4NTZjYTc5LTYyODMtNDJlMC05NjExLTczMjAyM2NhN2I4MSIsImVtYWlsIjoiZG9taW5pay5ib2VobTk3QGdtYWlsLmNvbSIsInBob25lIjoiIiwiYXBwX21ldGFkYXRhIjp7InByb3ZpZGVyIjoiZW1haWwiLCJwcm92aWRlcnMiOlsiZW1haWwiXX0sInVzZXJfbWV0YWRhdGEiOnsiZW1haWwiOiJkb21pbmlrLmJvZWhtOTdAZ21haWwuY29tIiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJwaG9uZV92ZXJpZmllZCI6ZmFsc2UsInN1YiI6IjE4NTZjYTc5LTYyODMtNDJlMC05NjExLTczMjAyM2NhN2I4MSIsInVzZXJuYW1lIjoiZG9taWI5NyJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6ImVtYWlsL3NpZ251cCIsInRpbWVzdGFtcCI6MTcxNjYwMDQ5MX1dLCJzZXNzaW9uX2lkIjoiMTIxYmI1ZTktNjg5Zi00OWQ2LWJjMTYtMzkzYzlmNzAyNDgwIiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.nn6sBtx2qtj5pqMSTCfjWBPDjKJhZbtwjPKRCINxfYA",
+
+"expires_in":3600,
+"expires_at":1716604091,
+
+"refresh_token":"SyrbNhFspcRSY8DMo50BVw","token_type
+
+//todo
+W/OnBackInvokedCallback(11660): OnBackInvokedCallback is not enabled for the application.
+W/OnBackInvokedCallback(11660): Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
