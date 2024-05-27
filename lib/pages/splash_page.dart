@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:notes_app2/pages/register_page_old.dart';
+import 'package:notes_app2/pages/register_page.dart';
 import 'package:notes_app2/pages/rooms_page.dart';
 import 'package:notes_app2/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

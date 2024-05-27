@@ -36,7 +36,7 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (mounted) {
       setState(() {
-        _isLoading = false;  // Corrected to set _isLoading to false after the operation
+        _isLoading = true;
       });
     }
   }
@@ -50,9 +50,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Define the spacer
-    const spacer = SizedBox(height: 16);
-
     return Scaffold(
       appBar: AppBar(title: const Text('Sign In')),
       body: ListView(
@@ -64,14 +61,14 @@ class _LoginPageState extends State<LoginPage> {
             const InputDecoration(labelText: 'Email'),
             keyboardType: TextInputType.emailAddress,
           ),
-          spacer,
+          formSpacer,
           TextFormField(
             controller: _passwordController,
             decoration: const InputDecoration(
                 labelText: 'Password'),
             obscureText: true,
           ),
-          spacer,
+          formSpacer,
           ElevatedButton(
             onPressed: _isLoading ? null : _signIn,
             child: const Text('Login'),
