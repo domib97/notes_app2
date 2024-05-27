@@ -1,0 +1,5 @@
+At the top of the rooms page, we are loading the newest created users to start a conversation.
+This is fine, but it only allows users to start a conversation with new users.
+We can for example update this to a list of users that are online at the same time.
+We can implement this using the https://supabase.com/docs/guides/realtime/presence feature of Supabase.
+
