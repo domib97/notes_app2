@@ -7,14 +7,11 @@ import 'package:notes_app2/utils/constants.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage(
-      {Key? key, required this.isRegistering})
-      : super(key: key);
+  const RegisterPage({Key? key, required this.isRegistering}) : super(key: key);
 
   static Route<void> route({bool isRegistering = false}) {
     return MaterialPageRoute(
-      builder: (context) =>
-          RegisterPage(isRegistering: isRegistering),
+      builder: (context) => RegisterPage(isRegistering: isRegistering),
     );
   }
 
@@ -25,7 +22,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final bool _isLoading = false;
+  bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -33,8 +30,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordController = TextEditingController();
   final _usernameController = TextEditingController();
 
-  late final StreamSubscription<AuthState>
-  _authSubscription;
+  late final StreamSubscription<AuthState> _authSubscription;
 
   @override
   void initState() {
@@ -42,15 +38,13 @@ class _RegisterPageState extends State<RegisterPage> {
 
     bool haveNavigated = false;
     // Listen to auth state to redirect user when the user clicks on confirmation link
-    _authSubscription =
-        supabase.auth.onAuthStateChange.listen((data) {
-          final session = data.session;
-          if (session != null && !haveNavigated) {
-            haveNavigated = true;
-            Navigator.of(context)
-                .pushReplacement(RoomsPage.route());
-          }
-        });
+    _authSubscription = supabase.auth.onAuthStateChange.listen((data) {
+      final session = data.session;
+      if (session != null && !haveNavigated) {
+        haveNavigated = true;
+        Navigator.of(context).pushReplacement(RoomsPage.route());
+      }
+    });
   }
 
   @override
@@ -69,6 +63,9 @@ class _RegisterPageState extends State<RegisterPage> {
     final email = _emailController.text;
     final password = _passwordController.text;
     final username = _usernameController.text;
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await supabase.auth.signUp(
         email: email,
@@ -77,31 +74,26 @@ class _RegisterPageState extends State<RegisterPage> {
         emailRedirectTo: 'io.supabase.chat://login',
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please check your inbox for confirmation email.'),
-        ),
+        SnackBar(content: Text('Please check your inbox for confirmation email.')),
       );
     } on AuthException catch (error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(error.message),
-        ),
+        SnackBar(content: Text(error.message)),
       );
     } catch (error) {
       debugPrint(error.toString());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text(unexpectedErrorMessage),
-        ),
+        SnackBar(content: Text(unexpectedErrorMessage)),
       );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Define the spacer
-    const spacer = SizedBox(height: 16);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Register'),
@@ -124,7 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
               },
               keyboardType: TextInputType.emailAddress,
             ),
-            spacer,
+            formSpacer,
             TextFormField(
               controller: _passwordController,
               obscureText: true,
@@ -141,7 +133,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 return null;
               },
             ),
-            spacer,
+            formSpacer,
             TextFormField(
               controller: _usernameController,
               decoration: const InputDecoration(
@@ -151,28 +143,25 @@ class _RegisterPageState extends State<RegisterPage> {
                 if (val == null || val.isEmpty) {
                   return 'Required';
                 }
-                final isValid =
-                RegExp(r'^[A-Za-z0-9_]{3,24}$')
-                    .hasMatch(val);
+                final isValid = RegExp(r'^[A-Za-z0-9_]{3,24}$').hasMatch(val);
                 if (!isValid) {
                   return '3-24 long with alphanumeric or underscore';
                 }
                 return null;
               },
             ),
-            spacer,
+            formSpacer,
             ElevatedButton(
               onPressed: _isLoading ? null : _signUp,
               child: const Text('Register'),
             ),
-            spacer,
+            formSpacer,
             TextButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(LoginPage.route());
-                },
-                child:
-                const Text('I already have an account'))
+              onPressed: () {
+                Navigator.of(context).push(LoginPage.route());
+              },
+              child: const Text('I already have an account'),
+            ),
           ],
         ),
       ),

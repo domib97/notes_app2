@@ -5,7 +5,7 @@ import 'package:notes_app2/cubits/profiles/profiles_cubit.dart';
 import 'package:notes_app2/cubits/rooms/rooms_cubit.dart';
 import 'package:notes_app2/models/profile.dart';
 import 'package:notes_app2/pages/chat_page.dart';
-import 'package:notes_app2/pages/register_page.dart';
+import 'package:notes_app2/pages/register_page_old.dart';
 import 'package:notes_app2/utils/constants.dart';
 import 'package:timeago/timeago.dart';
 
