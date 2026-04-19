@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/note.dart';
 import '../repositories/note_repository.dart';
-import '../repositories/local_note_repository.dart';
+import '../repositories/web2_note_repository.dart'; // Neu
 import '../repositories/cardano_note_repository.dart';
 import '../services/cardano_service.dart';
 
@@ -27,7 +27,8 @@ final noteRepositoryProvider = Provider<NoteRepository>((ref) {
   if (useCardano) {
     return CardanoNoteRepository(cardanoService);
   } else {
-    return LocalNoteRepository();
+    // Standardmäßig das Web2-Backend verwenden
+    return Web2NoteRepository();
   }
 });
 

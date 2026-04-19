@@ -36,4 +36,30 @@ class Note {
       karma: karma ?? this.karma,
     );
   }
+
+  /// Creates a Note from a JSON object.
+  factory Note.fromJson(Map<String, dynamic> json) {
+    return Note(
+      id: json['id'],
+      content: json['content'],
+      channel: json['channel'],
+      // The API sends a string, so we parse it.
+      timestamp: DateTime.parse(json['timestamp']),
+      // The API sends an integer, so we create a Color from it.
+      color: Color(json['color']),
+      karma: json['karma'],
+    );
+  }
+
+  /// Converts a Note into a JSON object.
+  /// Note: The API generates the ID and timestamp, so they are not sent from the client.
+  Map<String, dynamic> toJson() {
+    return {
+      'content': content,
+      'channel': channel,
+      // We send the integer value of the color.
+      'color': color.value,
+      'karma': karma,
+    };
+  }
 }
