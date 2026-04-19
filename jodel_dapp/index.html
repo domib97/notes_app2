@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jodel 2.0 - Cardano Web3 Test</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            padding: 20px; 
+            max-width: 600px; 
+            margin: auto; 
+            background-color: #f9f9f9;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        button { 
+            padding: 12px 24px; 
+            font-size: 16px; 
+            margin: 10px 5px 10px 0; 
+            cursor: pointer; 
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.2s;
+        }
+        button:hover { background-color: #0056b3; }
+        #status { 
+            margin-top: 20px; 
+            padding: 15px; 
+            background-color: #e9ecef; 
+            border-left: 4px solid #007bff;
+            border-radius: 4px; 
+            word-wrap: break-word; 
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jodel 2.0 - Web3</h1>
+        <p>Verbinde deine Wallet, um deinen ersten Jodel auf die Cardano Preprod Blockchain zu schreiben!</p>
+        
+        <button id="connectEternlBtn">Connect Eternl Wallet</button>
+        <button id="connectNamiBtn" style="background-color: #4CAF50;">Connect Nami Wallet</button>
+        
+        <div id="status">
+            <strong>Status:</strong> Disconnected<br>
+            Warte auf Verbindung...
+        </div>
+    </div>
+
+    <script>
+        const statusDiv = document.getElementById('status');
+
+        async function connectWallet(walletName) {
+            statusDiv.innerHTML = `<strong>Status:</strong> Verbinde mit ${walletName}...`;
+            
+            try {
+                // 1. Prüfen, ob das Cardano-Objekt vom Browser-Plugin injiziert wurde (CIP-30 Standard)
+                if (!window.cardano) {
+                    statusDiv.innerHTML = `<strong>Fehler:</strong> Keine Cardano Wallet gefunden! Bitte installiere Eternl oder Nami.`;
+                    return;
+                }
+
+                // 2. Prüfen, ob die spezifische Wallet existiert (z.B. window.cardano.eternl)
+                const walletExtension = window.cardano[walletName.toLowerCase()];
+                if (!walletExtension) {
+                    statusDiv.innerHTML = `<strong>Fehler:</strong> ${walletName} Wallet nicht gefunden!`;
+                    return;
+                }
+
+                // 3. Wallet-API anfragen (Das öffnet den Popup im Browser!)
+                // api ist das Objekt, mit dem wir später Transaktionen signieren können
+                const api = await walletExtension.enable();
+                
+                // 4. Ein paar Basis-Infos auslesen (Netzwerk & Adresse)
+                const networkId = await api.getNetworkId();
+                const networkName = networkId === 0 ? "Testnet (Preprod/Preview)" : "Mainnet";
+                
+                // Adressen sind im Hex-Format kodiert (die Blockchain spricht in Hexadezimal)
+                const hexAddresses = await api.getUsedAddresses();
+                
+                // Wir nehmen die erste gefundene Adresse
+                const firstAddressHex = hexAddresses[0];
+
+                statusDiv.innerHTML = `
+                    <strong>Status: Verbunden! 🚀</strong><br><br>
+                    <strong>Wallet:</strong> ${walletName}<br>
+                    <strong>Netzwerk:</strong> ${networkName} (ID: ${networkId})<br>
+                    <strong>Erste Adresse (Hex):</strong> <span style="font-family: monospace; font-size: 12px;">${firstAddressHex.substring(0, 30)}...</span><br><br>
+                    <i style="color: green;">Wir sind bereit für den Smart Contract!</i>
+                `;
+                
+                console.log("Wallet API erfolgreich geladen:", api);
+
+            } catch (error) {
+                console.error("Wallet Connection Error:", error);
+                statusDiv.innerHTML = `<strong>Fehler:</strong> Verbindung abgelehnt oder fehlgeschlagen. (${error.info || error.message || error})`;
+            }
+        }
+
+        document.getElementById('connectEternlBtn').addEventListener('click', () => connectWallet('Eternl'));
+        document.getElementById('connectNamiBtn').addEventListener('click', () => connectWallet('Nami'));
+    </script>
+</body>
+</html>
