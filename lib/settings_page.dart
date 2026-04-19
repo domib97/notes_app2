@@ -71,7 +71,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
               : "Inaktiv: Lokale Simulation"),
             secondary: const FaIcon(FontAwesomeIcons.ethereum), // Ethereum Icon als Platzhalter für Crypto
             value: useCardano,
-            activeThumbColor: Colors.orange,
+            activeThumbColor: Colors.blueAccent,
             onChanged: (value) {
               ref.read(useCardanoBackendProvider.notifier).toggle(value);
             },
@@ -87,7 +87,7 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           ),
           ListTile(
             title: const Text('About'),
-            subtitle: const Text('Version 2.0 - Web3 Ready'),
+            subtitle: const Text('Version 0.1 - Prod'),
             trailing: const FaIcon(FontAwesomeIcons.circleInfo),
             onTap: () {
             // Show about dialog
