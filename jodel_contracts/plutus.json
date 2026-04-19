@@ -1,0 +1,85 @@
+{
+  "preamble": {
+    "title": "domib97/jodel_contracts",
+    "description": "Aiken contracts for project 'domib97/jodel_contracts'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.21+42babe5"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "note_voting.note_voting.spend",
+      "datum": {
+        "title": "datum",
+        "schema": {
+          "$ref": "#/definitions/note_voting~1NoteDatum"
+        }
+      },
+      "redeemer": {
+        "title": "action",
+        "schema": {
+          "$ref": "#/definitions/note_voting~1VoteAction"
+        }
+      },
+      "compiledCode": "58e601010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a375400513233712906380992cc004c00cc030dd500444cdc01bad3001300d3754004900144cdc01bad3001300d37540049000a0162300f3010001300d300b3754005164025300a375400d300d003488966002600800515980098071baa009801c5900f456600266e1d20020028acc004c038dd5004c00e2c807a2c806100c0c02cc030004dc3a400060106ea800a2c8030600e00260066ea801e29344d95900101",
+      "hash": "ac582d26e989cc84542984688d35f52e1253668aa76620e56eedea89"
+    },
+    {
+      "title": "note_voting.note_voting.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "58e601010029800aba2aba1aab9faab9eaab9dab9a48888896600264653001300700198039804000cc01c0092225980099b8748008c01cdd500144c8cc8a60022b30013001300a375400513233712906380992cc004c00cc030dd500444cdc01bad3001300d3754004900144cdc01bad3001300d37540049000a0162300f3010001300d300b3754005164025300a375400d300d003488966002600800515980098071baa009801c5900f456600266e1d20020028acc004c038dd5004c00e2c807a2c806100c0c02cc030004dc3a400060106ea800a2c8030600e00260066ea801e29344d95900101",
+      "hash": "ac582d26e989cc84542984688d35f52e1253668aa76620e56eedea89"
+    }
+  ],
+  "definitions": {
+    "ByteArray": {
+      "dataType": "bytes"
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "note_voting/NoteDatum": {
+      "title": "NoteDatum",
+      "anyOf": [
+        {
+          "title": "NoteDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "note_id",
+              "$ref": "#/definitions/ByteArray"
+            },
+            {
+              "title": "karma",
+              "$ref": "#/definitions/Int"
+            }
+          ]
+        }
+      ]
+    },
+    "note_voting/VoteAction": {
+      "title": "VoteAction",
+      "anyOf": [
+        {
+          "title": "Upvote",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": []
+        },
+        {
+          "title": "Downvote",
+          "dataType": "constructor",
+          "index": 1,
+          "fields": []
+        }
+      ]
+    }
+  }
+}
