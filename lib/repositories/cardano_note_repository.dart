@@ -19,6 +19,11 @@ class CardanoNoteRepository implements NoteRepository {
     await _cardanoService.postJodel(note.content, note.channel);
   }
 
+  Future<void> simulateVote(String txHash, int change) async {
+    await _cardanoService.simulateVote(txHash, change);
+  }
+
+
   @override
   Future<void> removeNote(String id) async {
     print("CARDANO: Löschen erfordert Aiken-Berechtigung.");

@@ -1,106 +1,77 @@
-import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+
 
 class CardanoService {
-  late final WebViewController _controller;
+  // Blockfrost ist die Standard-REST-API für Cardano
+  // API-Key: https://blockfrost.io (kostenloser Tier verfügbar)
+  static const String _baseUrl = 'https://cardano-mainnet.blockfrost.io/api/v0';
+  static const String _apiKey = 'YOUR_BLOCKFROST_PROJECT_ID';
 
-  CardanoService() {
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavascriptMode.unrestricted)
-      ..addJavaScriptChannel(
-        'FlutterBridge',
-        onMessageReceived: (JavaScriptMessage message) {
-          // Das ist deine Konsole für Debugging in Flutter!
-          print('CARDANO-JS: ${message.message}');
-        },
-      )
-      ..loadHtmlString(_buildBridgeHtml());
+  Future<Map<String, dynamic>> voteJodel(String id, int change) {
+    return simulateVote(id, change);
   }
 
-  Future<void> postJodel(String content, String channel) async {
-    // Ruft die JS-Funktion auf, die wir unten definiert haben
-    await _controller.runJavaScript("postJodelToContract('$content', '$channel')");
+  static const Map<String, String> _headers = {
+    'project_id': _apiKey,
+    'Content-Type': 'application/json',
+  };
+
+  /// Jodel / Note auf Chain simulieren (Transaktion submitten)
+  Future<Map<String, dynamic>> postJodel(String content, String channel) async {
+    // Für echte On-Chain Txs: Cardano-Wallet-API oder Lucid-Bibliothek nötig
+    // Hier: Metadaten-Transaktion simulieren via API
+    final response = await http.get(
+      Uri.parse('$_baseUrl/blocks/latest'),
+      headers: _headers,
+    );
+
+    if (response.statusCode == 200) {
+      final block = jsonDecode(response.body);
+      return {
+        'status': 'simulated',
+        'content': content,
+        'channel': channel,
+        'block': block['hash'],
+      };
+    }
+    throw Exception('Cardano API Fehler: ${response.statusCode}');
   }
 
-  Future<void> voteJodel(String txHash, int change) async {
-    await _controller.runJavaScript("simulateVote('$txHash', $change)");
+  /// Vote auf eine Transaktion simulieren
+  Future<Map<String, dynamic>> simulateVote(String txHash, int change) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/txs/$txHash'),
+      headers: _headers,
+    );
+
+    if (response.statusCode == 200) {
+      final tx = jsonDecode(response.body);
+      return {
+        'txHash': txHash,
+        'voteChange': change,
+        'blockHeight': tx['block_height'],
+        'status': 'voted',
+      };
+    }
+    throw Exception('TX nicht gefunden: $txHash');
   }
 
-  String _buildBridgeHtml() {
-    return '''
-<!DOCTYPE html>
-<html>
-<head>
-    <script type="module">
-        import { Lucid, Blockfrost, Data, fromText, Constr } from "https://unpkg.com/lucid-cardano@0.10.7/web/mod.js";
-        
-        // --- KONFIGURATION (Dein funktionierender Code!) ---
-        const blockfrostKey = "preprod8ysh4eKjL2DKIDaWwhPlLnBhrIPMGudr";
-        const provider = new Blockfrost("https://cardano-preprod.blockfrost.io/api/v0", blockfrostKey);
-        const compiledContractCbor = "49480100002221200101"; // Dein V2 AlwaysSucceeds
-        
-        const NoteDatumSchema = Data.Object({
-            note_id: Data.Bytes(),
-            karma: Data.Integer(),
-        });
+  /// ADA-Guthaben einer Adresse abrufen
+  Future<String> getBalance(String address) async {
+    final response = await http.get(
+      Uri.parse('$_baseUrl/addresses/$address'),
+      headers: _headers,
+    );
 
-        let lucidInstance = null;
-
-        // Initialisierung
-        async function initLucid() {
-            if (lucidInstance) return lucidInstance;
-            
-            if (!window.cardano || !window.cardano.eternl) {
-                FlutterBridge.postMessage("Fehler: Eternl Wallet nicht gefunden!");
-                return null;
-            }
-            
-            const api = await window.cardano.eternl.enable();
-            lucidInstance = await Lucid.new(provider, "Preprod");
-            lucidInstance.selectWallet(api);
-            return lucidInstance;
-        }
-
-        window.postJodelToContract = async (content, channel) => {
-            try {
-                const lucid = await initLucid();
-                if (!lucid) return;
-
-                FlutterBridge.postMessage("Baue Transaktion für Jodel...");
-
-                const contractAddress = lucid.utils.validatorToAddress({ type: "PlutusV2", script: compiledContractCbor });
-                const datum = Data.to({ note_id: fromText("jodel-flutter"), karma: 0n }, NoteDatumSchema);
-
-                const tx = await lucid.newTx()
-                    .payToContract(contractAddress, { inline: datum }, { lovelace: 2000000n })
-                    .complete();
-
-                const signedTx = await tx.sign().complete();
-                const txHash = await signedTx.submit();
-
-                FlutterBridge.postMessage("ERFOLG! Jodel TxHash: " + txHash);
-            } catch (e) {
-                FlutterBridge.postMessage("JS-FEHLER: " + e.toString());
-            }
-        };
-
-        window.simulateVote = async (txHash, change) => {
-            try {
-                const lucid = await initLucid();
-                if (!lucid) return;
-                
-                FlutterBridge.postMessage("Starte Vote-Prozess...");
-                // Hier würde jetzt die reale Vote-Logik folgen (UTXO suchen etc.)
-                // Für den ersten Flutter-Test lassen wir es bei dem Log-Eintrag
-            } catch (e) {
-                FlutterBridge.postMessage("JS-VOTE-FEHLER: " + e.toString());
-            }
-        };
-    </script>
-</head>
-<body>
-    <div id="status">Cardano Bridge Active</div>
-</body>
-</html>
-    ''';
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      final lovelace = data['amount']
+          .firstWhere((a) => a['unit'] == 'lovelace')['quantity'];
+      final ada = int.parse(lovelace) / 1000000;
+      return '${ada.toStringAsFixed(2)} ADA';
+    }
+    throw Exception('Adresse nicht gefunden');
   }
 }
