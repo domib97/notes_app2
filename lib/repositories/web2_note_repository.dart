@@ -4,7 +4,8 @@ import '../models/note.dart';
 import 'note_repository.dart';
 
 class Web2NoteRepository implements NoteRepository {
-  final String _baseUrl = "http://127.0.0.1:8000"; // Standard-URL für lokalen FastAPI-Server
+// 10.0.2.2 ist die IP-Adresse deines PCs vom Android-Emulator aus gesehen
+  final String _baseUrl = "http://127.0.0.1:8000";
   final Map<String, String> _headers = {
     'Content-Type': 'application/json; charset=UTF-8',
   };
@@ -21,13 +22,18 @@ class Web2NoteRepository implements NoteRepository {
     }
   }
 
-  @override
-  Future<void> addNote(Note note) async {
-    final response = await http.post(
-      Uri.parse('$_baseUrl/notes'),
-      headers: _headers,
-      body: json.encode(note.toJson()),
-    );
+    @override
+    Future<void> addNote(Note note) async {
+        final response = await http.post(
+           Uri.parse('$_baseUrl/notes'),
+          headers: _headers,
+          // WICHTIG: Die ID muss hier mitgesendet werden!
+          body: json.encode({
+            ...note.toJson(),
+             'id': note.id,
+           }),
+         );
+
 
     if (response.statusCode != 201) {
       throw Exception('Failed to add note via web2 backend');

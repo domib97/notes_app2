@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jodel-backend
+  namespace: webapps # Wir legen es in deinen webapps Namespace
+  labels:
+    app: jodel-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jodel-backend
+  template:
+    metadata:
+      labels:
+        app: jodel-backend
+    spec:
+      containers:
+      - name: jodel-backend
+        # ERSETZE DIESES IMAGE DURCH DEIN GEPUSHTES IMAGE:
+        image: gitea.local/dom/jodel-backend:v1 
+        ports:
+        - containerPort: 8000
+        env:
+        - name: DB_HOST
+          value: "postgresql.postgresql.svc.cluster.local"
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: "postgres"
+        - name: DB_NAME
+          value: "postgres"
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgresql
+              key: postgres-password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jodel-backend-service
+  namespace: webapps
+spec:
+  selector:
+    app: jodel-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8000
+  type: ClusterIP
