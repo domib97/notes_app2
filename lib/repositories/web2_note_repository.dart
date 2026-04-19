@@ -5,7 +5,7 @@ import 'note_repository.dart';
 
 class Web2NoteRepository implements NoteRepository {
 // 10.0.2.2 ist die IP-Adresse deines PCs vom Android-Emulator aus gesehen
-  final String _baseUrl = "http://127.0.0.1:8000";
+  final String _baseUrl = "http://jodel.local";
   final Map<String, String> _headers = {
     'Content-Type': 'application/json; charset=UTF-8',
   };

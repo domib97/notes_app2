@@ -17,7 +17,6 @@ spec:
     spec:
       containers:
       - name: jodel-backend
-        # ERSETZE DIESES IMAGE DURCH DEIN GEPUSHTES IMAGE:
         image: gitea.local/dom/jodel-backend:v1 
         ports:
         - containerPort: 8000
