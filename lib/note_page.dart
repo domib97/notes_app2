@@ -1,46 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
 
-void main() {
-  runApp(const MyApp());
-}
+import 'models/note.dart';
+import 'providers/note_provider.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Jodel 2.0',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const NotePage(),
-    );
-  }
-}
-
-class Note {
-  final String content;
-  final String channel;
-  final DateTime timestamp;
-  final Color color;
-  int karma;
-
-  Note(this.content, this.channel, this.color, {this.karma = 0}) : timestamp = DateTime.now();
-}
-
-class NotePage extends StatefulWidget {
+class NotePage extends ConsumerStatefulWidget {
   const NotePage({super.key});
 
   @override
-  State<NotePage> createState() => _NotePageState();
+  ConsumerState<NotePage> createState() => _NotePageState();
 }
 
-class _NotePageState extends State<NotePage> {
-  final List<Note> _notes = [];
+class _NotePageState extends ConsumerState<NotePage> {
   final List<Color> _colors = [
     Colors.red,
     Colors.blue,
@@ -105,26 +80,27 @@ class _NotePageState extends State<NotePage> {
     );
 
     if (saved == true) {
-      setState(() {
-        _notes.add(
-            Note(contentController.text, channelController.text, _colors[_random.nextInt(_colors.length)], karma: 0));
-      });
+      final newNote = Note(
+        content: contentController.text,
+        channel: channelController.text,
+        color: _colors[_random.nextInt(_colors.length)],
+        karma: 0,
+      );
+      ref.read(notesProvider.notifier).addNote(newNote);
     }
   }
 
-  void incrementKarma(int index) {
-    setState(() {
-      _notes[index].karma++;
-    });
+  void incrementKarma(String id) {
+    HapticFeedback.lightImpact(); // Vibcoating
+    ref.read(notesProvider.notifier).voteNote(id, 1);
   }
 
-  void decrementKarma(int index) {
-    setState(() {
-      _notes[index].karma--;
-    });
+  void decrementKarma(String id) {
+    HapticFeedback.lightImpact(); // Vibcoating
+    ref.read(notesProvider.notifier).voteNote(id, -1);
   }
 
-  void _removeNote(int index) async {
+  void _removeNote(String id) async {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -146,62 +122,72 @@ class _NotePageState extends State<NotePage> {
     );
 
     if (confirmed ?? false) {
-      setState(() {
-        _notes.removeAt(index);
-      });
+      ref.read(notesProvider.notifier).removeNote(id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final notesAsyncValue = ref.watch(notesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Jodel 2.0'),
         centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: _notes.length,
-        itemBuilder: (BuildContext context, int index) {
-          return Card(
-            color: _notes[index].color,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10.0),
-            ),
-            child: ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text("@${_notes[index].channel}", style: const TextStyle(fontSize: 15, color: Colors.black)),
-                  const SizedBox(width: 10),
-                  Text(DateFormat('kk:mm:ss').format(_notes[index].timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
-                ],
-              ),
-              subtitle: Text(_notes[index].content, style: const TextStyle(fontSize: 20, color: Colors.white)),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                    icon: const FaIcon(FontAwesomeIcons.angleUp),
-                    onPressed: () => incrementKarma(index),
-                    color: Colors.black,
+      body: notesAsyncValue.when(
+        data: (notes) {
+          if (notes.isEmpty) {
+            return const Center(child: Text("No Jodels yet! Be the first."));
+          }
+          return ListView.builder(
+            itemCount: notes.length,
+            itemBuilder: (BuildContext context, int index) {
+              final note = notes[index];
+              return Card(
+                color: note.color,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text("@${note.channel}", style: const TextStyle(fontSize: 15, color: Colors.black)),
+                      const SizedBox(width: 10),
+                      Text(DateFormat('kk:mm:ss').format(note.timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
+                    ],
                   ),
-                  Text('${_notes[index].karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
-                  IconButton(
-                    icon: const FaIcon(FontAwesomeIcons.angleDown),
-                    onPressed: () => decrementKarma(index),
-                    color: Colors.black,
+                  subtitle: Text(note.content, style: const TextStyle(fontSize: 20, color: Colors.white)),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.angleUp),
+                        onPressed: () => incrementKarma(note.id),
+                        color: Colors.black,
+                      ),
+                      Text('${note.karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
+                      IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.angleDown),
+                        onPressed: () => decrementKarma(note.id),
+                        color: Colors.black,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.delete),
+                        onPressed: () => _removeNote(note.id),
+                        color: Colors.red,
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () => _removeNote(index),
-                    color: Colors.red,
-                  ),
-                ],
-              ),
-              onTap: () {},
-            ),
+                  onTap: () {},
+                ),
+              );
+            },
           );
         },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('Error: $error')),
       ),
       floatingActionButton: FloatingActionButton(
         splashColor: Colors.green,

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
 
 class ChatScreen extends StatefulWidget {
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  State<ChatScreen> createState() => _ChatScreenState();
   const ChatScreen({super.key});
 }
 

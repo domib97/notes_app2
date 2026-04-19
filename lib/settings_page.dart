@@ -3,7 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
-  _SettingsPageState createState() => _SettingsPageState();
+
+  State<SettingsPage> createState() => _SettingsPageState();
   const SettingsPage({super.key});
 }
 
@@ -16,16 +17,16 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         centerTitle: true,
       ),
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text('Dark Mode'),
+            title: const Text('Dark Mode'),
             trailing: Switch(
               value: _darkMode,
-              activeColor: Colors.green,
+              activeThumbColor: Colors.green,
               onChanged: (value) {
                 setState(() {
                   _darkMode = value;
@@ -34,10 +35,10 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            title: Text('Notifications'),
+            title: const Text('Notifications'),
             trailing: Switch(
               value: _notificationsEnabled,
-              activeColor: Colors.green,
+              activeThumbColor: Colors.green,
               onChanged: (value) {
                 setState(() {
                   _notificationsEnabled = value;
@@ -46,16 +47,16 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
           ListTile(
-            title: Text('Language'),
-            subtitle: Text('English'),
+            title: const Text('Language'),
+            subtitle: const Text('English'),
             trailing: const FaIcon(FontAwesomeIcons.angleRight),
             onTap: () {
             // Navigate to language selection page
             },
           ),
           ListTile(
-            title: Text('About'),
-            subtitle: Text('Version 1.0'),
+            title: const Text('About'),
+            subtitle: const Text('Version 1.0'),
             trailing: const FaIcon(FontAwesomeIcons.circleInfo),
             onTap: () {
             // Show about dialog

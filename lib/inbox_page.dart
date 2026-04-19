@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -13,14 +15,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: InboxPage(),
+      home: const InboxPage(),
     );
   }
 }
 
 class InboxPage extends StatefulWidget {
   @override
-  _InboxPageState createState() => _InboxPageState();
+  State<InboxPage> createState() => _InboxPageState();
   const InboxPage({super.key});
 }
 
@@ -29,7 +31,7 @@ class _InboxPageState extends State<InboxPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inbox'),
+        title: const Text('Inbox'),
         centerTitle: true,
       ),
       body: DefaultTabController(
