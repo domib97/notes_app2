@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'providers/note_provider.dart';
 
-class SettingsPage extends StatefulWidget {
-  @override
-
-  State<SettingsPage> createState() => _SettingsPageState();
+class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  ConsumerState<SettingsPage> createState() => _SettingsPageState();
 }
 
-class _SettingsPageState extends State<SettingsPage> {
+class _SettingsPageState extends ConsumerState<SettingsPage> {
   bool _darkMode = false;
   bool _notificationsEnabled = true;
 
-
   @override
   Widget build(BuildContext context) {
+    final useCardano = ref.watch(useCardanoBackendProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Settings'),
@@ -22,6 +25,13 @@ class _SettingsPageState extends State<SettingsPage> {
       ),
       body: ListView(
         children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Allgemein",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+            ),
+          ),
           ListTile(
             title: const Text('Dark Mode'),
             trailing: Switch(
@@ -46,6 +56,27 @@ class _SettingsPageState extends State<SettingsPage> {
               },
             ),
           ),
+          const Divider(),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              "Web3 & Blockchain",
+              style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),
+            ),
+          ),
+          SwitchListTile(
+            title: const Text('Cardano Backend nutzen'),
+            subtitle: Text(useCardano 
+              ? "Aktiv: Aiken Smart Contract" 
+              : "Inaktiv: Lokale Simulation"),
+            secondary: const FaIcon(FontAwesomeIcons.ethereum), // Ethereum Icon als Platzhalter für Crypto
+            value: useCardano,
+            activeThumbColor: Colors.orange,
+            onChanged: (value) {
+              ref.read(useCardanoBackendProvider.notifier).toggle(value);
+            },
+          ),
+          const Divider(),
           ListTile(
             title: const Text('Language'),
             subtitle: const Text('English'),
@@ -56,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           ListTile(
             title: const Text('About'),
-            subtitle: const Text('Version 1.0'),
+            subtitle: const Text('Version 2.0 - Web3 Ready'),
             trailing: const FaIcon(FontAwesomeIcons.circleInfo),
             onTap: () {
             // Show about dialog
