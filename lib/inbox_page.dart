@@ -1,25 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Inbox',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: const InboxPage(),
-    );
-  }
-}
-
 class InboxPage extends StatefulWidget {
   @override
   State<InboxPage> createState() => _InboxPageState();
@@ -50,9 +31,9 @@ class _InboxPageState extends State<InboxPage> {
             Expanded(
               child: TabBarView(
                 children: [
-                  Center(child: const Text('Content A', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
-                  Center(child: const Text('Content B', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.cyanAccent)),
-                  Center(child: const Text('Content C', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.greenAccent)),
+                  Center(child: const Text('Regeln:\n1. \n2. \n', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.pink)),
+                  Center(child: const Text('zK-Altersverifikation', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.cyanAccent)),
+                  Center(child: const Text('Karma-Store', style: TextStyle(fontSize: 24)).animate().fade().scale().tint(color: Colors.greenAccent)),
                 ],
               ),
             ),

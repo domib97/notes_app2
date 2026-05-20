@@ -132,7 +132,7 @@ class _NotePageState extends ConsumerState<NotePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Jodel 2.0'),
+        title: const Text('Jodel 2'),
         centerTitle: true,
       ),
       body: notesAsyncValue.when(
@@ -153,12 +153,12 @@ class _NotePageState extends ConsumerState<NotePage> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("@${note.channel}", style: const TextStyle(fontSize: 15, color: Colors.black)),
-                      const SizedBox(width: 10),
-                      Text(DateFormat('kk:mm:ss').format(note.timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
+                      Text("@${note.channel}", style: const TextStyle(fontSize: 14, color: Colors.black)),
+                      const SizedBox(width: 50),
+                      Text(DateFormat('dd-MM-yy kk:mm:ss').format(note.timestamp), style: const TextStyle(fontSize: 13, color: Colors.black)),
                     ],
                   ),
-                  subtitle: Text(note.content, style: const TextStyle(fontSize: 20, color: Colors.white)),
+                  subtitle: Text(note.content, style: const TextStyle(fontSize: 28, color: Colors.white)),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
@@ -167,7 +167,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                         onPressed: () => incrementKarma(note.id),
                         color: Colors.black,
                       ),
-                      Text('${note.karma}', style: const TextStyle(fontSize: 12, color: Colors.black)),
+                      Text('${note.karma}', style: const TextStyle(fontSize: 21, color: Colors.white)),
                       IconButton(
                         icon: const FaIcon(FontAwesomeIcons.angleDown),
                         onPressed: () => decrementKarma(note.id),
@@ -176,7 +176,7 @@ class _NotePageState extends ConsumerState<NotePage> {
                       IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () => _removeNote(note.id),
-                        color: Colors.red,
+                        color: Colors.black,
                       ),
                     ],
                   ),

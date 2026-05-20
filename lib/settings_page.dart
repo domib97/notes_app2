@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'providers/note_provider.dart';
+import 'providers/theme_provider.dart';
 
 class SettingsPage extends ConsumerStatefulWidget {
   const SettingsPage({super.key});
@@ -11,12 +12,12 @@ class SettingsPage extends ConsumerStatefulWidget {
 }
 
 class _SettingsPageState extends ConsumerState<SettingsPage> {
-  bool _darkMode = false;
   bool _notificationsEnabled = true;
 
   @override
   Widget build(BuildContext context) {
     final useCardano = ref.watch(useCardanoBackendProvider);
+    final isDarkMode = ref.watch(darkModeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -35,12 +36,10 @@ class _SettingsPageState extends ConsumerState<SettingsPage> {
           ListTile(
             title: const Text('Dark Mode'),
             trailing: Switch(
-              value: _darkMode,
+              value: isDarkMode,
               activeThumbColor: Colors.green,
               onChanged: (value) {
-                setState(() {
-                  _darkMode = value;
-                });
+                ref.read(darkModeProvider.notifier).toggle(value);
               },
             ),
           ),
