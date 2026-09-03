@@ -18,63 +18,86 @@ class NotePage extends ConsumerStatefulWidget {
 class _NotePageState extends ConsumerState<NotePage> {
   final List<Color> _colors = [
     Colors.red,
-    Colors.blue,
+    Colors.amber,
     Colors.green,
-    Colors.cyan,
-    Colors.orange,
+    Colors.lightBlueAccent,
+    Colors.orangeAccent,
+    Colors.pink,
+
   ];
   final Random _random = Random();
 
   void _showAddNoteDialog() async {
     TextEditingController contentController = TextEditingController();
     TextEditingController channelController = TextEditingController();
+    // Start with a random colour, the user can change it in the dialog.
+    Color selectedColor = _colors[_random.nextInt(_colors.length)];
 
     final bool? saved = await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Image.asset('assets/images/logo1.png'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
-            children: <Widget>[
-              ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 60),
-                child: TextField(
-                  controller: channelController,
-                  decoration: const InputDecoration(
-                    hintText: '@Channel',
-                    contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+        // StatefulBuilder so the colour selection can re-render inside the dialog.
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) {
+            return AlertDialog(
+              title: Image.asset('assets/images/logo1.png'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min, // Limits the column's height expansion
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 60),
+                    child: TextField(
+                      controller: channelController,
+                      decoration: const InputDecoration(
+                        hintText: '@Channel',
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 8),
-              ConstrainedBox(
-                constraints: const BoxConstraints(minHeight: 60),
-                child: TextField(
-                  controller: contentController,
-                  autofocus: true,
-                  decoration: const InputDecoration(
-                    hintText: '#GoodVibesOnly',
-                    contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                  const SizedBox(height: 8),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 60),
+                    child: TextField(
+                      controller: contentController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: '#GoodVibesOnly',
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 16),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Colour', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                  ),
+                  const SizedBox(height: 8),
+                  _ColorPicker(
+                    colors: _colors,
+                    selected: selectedColor,
+                    onSelected: (color) {
+                      HapticFeedback.selectionClick();
+                      setDialogState(() => selectedColor = color);
+                    },
+                  ),
+                ],
               ),
-            ],
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context, false),
-              child: const Text('Cancel'),
-            ),
-            TextButton(
-              onPressed: () {
-                if (contentController.text.isNotEmpty && channelController.text.isNotEmpty) {
-                  Navigator.pop(context, true);
-                }
-              },
-              child: const Text('Save'),
-            ),
-          ],
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (contentController.text.isNotEmpty && channelController.text.isNotEmpty) {
+                      Navigator.pop(context, true);
+                    }
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
@@ -83,7 +106,7 @@ class _NotePageState extends ConsumerState<NotePage> {
       final newNote = Note(
         content: contentController.text,
         channel: channelController.text,
-        color: _colors[_random.nextInt(_colors.length)],
+        color: selectedColor,
         karma: 0,
       );
       ref.read(notesProvider.notifier).addNote(newNote);
@@ -122,7 +145,15 @@ class _NotePageState extends ConsumerState<NotePage> {
     );
 
     if (confirmed ?? false) {
-      ref.read(notesProvider.notifier).removeNote(id);
+      try {
+        await ref.read(notesProvider.notifier).removeNote(id);
+      } catch (e) {
+        // The provider already restored the note; just tell the user.
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not delete Jodel from backend: $e')),
+        );
+      }
     }
   }
 
@@ -198,6 +229,51 @@ class _NotePageState extends ConsumerState<NotePage> {
         child: const FaIcon(FontAwesomeIcons.plus),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+}
+
+/// A row of tappable colour swatches. The selected one gets a border and a check mark.
+class _ColorPicker extends StatelessWidget {
+  final List<Color> colors;
+  final Color selected;
+  final ValueChanged<Color> onSelected;
+
+  const _ColorPicker({
+    required this.colors,
+    required this.selected,
+    required this.onSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final outline = Theme.of(context).colorScheme.onSurface;
+
+    return Wrap(
+      spacing: 10,
+      runSpacing: 10,
+      children: colors.map((color) {
+        final bool isSelected = color == selected;
+        return GestureDetector(
+          onTap: () => onSelected(color),
+          child: AnimatedContainer(
+            duration: const Duration(milliseconds: 150),
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: color,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: isSelected ? outline : Colors.transparent,
+                width: 3,
+              ),
+            ),
+            child: isSelected
+                ? const Icon(Icons.check, size: 20, color: Colors.white)
+                : null,
+          ),
+        );
+      }).toList(),
     );
   }
 }

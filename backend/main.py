@@ -112,3 +112,34 @@ def vote_note(note_id: UUID, vote_data: VoteData, db: Session = Depends(get_db))
     db.commit()
     db.refresh(note)
     return note
+
+@app.put("/notes/{note_id}", response_model=NoteOut)
+def update_note(note_id: UUID, note_in: NoteIn, db: Session = Depends(get_db)):
+    print(f"UPDATE: Searching for Note with ID: {note_id}")
+    note = db.query(NoteDB).filter(NoteDB.id == note_id).first()
+
+    if not note:
+        print(f"ERROR: Update failed. ID {note_id} not found in database!")
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    note.content = note_in.content
+    note.channel = note_in.channel
+    note.color = note_in.color
+    note.karma = note_in.karma
+    db.commit()
+    db.refresh(note)
+    return note
+
+@app.delete("/notes/{note_id}", status_code=204)
+def delete_note(note_id: UUID, db: Session = Depends(get_db)):
+    print(f"DELETE: Searching for Note with ID: {note_id}")
+    note = db.query(NoteDB).filter(NoteDB.id == note_id).first()
+
+    if not note:
+        print(f"ERROR: Delete failed. ID {note_id} not found in database!")
+        raise HTTPException(status_code=404, detail="Note not found")
+
+    db.delete(note)
+    db.commit()
+    # 204 No Content: the Flutter client (Web2NoteRepository) expects exactly this status
+    return None
