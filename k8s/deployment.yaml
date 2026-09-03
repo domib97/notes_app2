@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: jodel-backend
-        image: gitea.local/dom/jodel-backend:v1 
+        image: git.local/dom/jodel-backend:v3
         ports:
         - containerPort: 8000
         env:
