@@ -33,7 +33,11 @@ class NoteDB(Base):
     color = Column(BigInteger, nullable=False) # GEÄNDERT: BigInteger statt Integer
     karma = Column(Integer, default=0)
 
-    Base.metadata.create_all(bind=engine)
+
+# Tabellen anlegen, NACHDEM das Modell in der Metadata registriert ist.
+# (Stand vorher faelschlich im Klassenkoerper -> lief zu frueh -> "notes" wurde nie erzeugt.)
+Base.metadata.create_all(bind=engine)
+
 
 class NoteIn(BaseModel):
     id: Optional[UUID] = None
