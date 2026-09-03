@@ -49,8 +49,16 @@ class NoteListNotifier extends AsyncNotifier<List<Note>> {
   Future<void> removeNote(String id) async {
     final repository = ref.read(noteRepositoryProvider);
     final currentNotes = state.value ?? [];
+    // Optimistic update: remove from UI immediately...
     state = AsyncValue.data(currentNotes.where((n) => n.id != id).toList());
-    await repository.removeNote(id);
+    try {
+      // ...then delete from the backend DB.
+      await repository.removeNote(id);
+    } catch (e) {
+      // Backend rejected the deletion -> restore the note and let the UI know.
+      state = AsyncValue.data(currentNotes);
+      rethrow;
+    }
   }
 
   Future<void> voteNote(String id, int change) async {
