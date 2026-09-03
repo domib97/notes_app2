@@ -113,6 +113,100 @@ class _NotePageState extends ConsumerState<NotePage> {
     }
   }
 
+  void _showEditNoteDialog(Note note) async {
+    final TextEditingController contentController = TextEditingController(text: note.content);
+    final TextEditingController channelController = TextEditingController(text: note.channel);
+    // Pre-select the note's current colour; fall back to a random one if it is
+    // outside the palette (older notes may carry a colour we no longer offer).
+    Color selectedColor = _colors.contains(note.color)
+        ? note.color
+        : _colors[_random.nextInt(_colors.length)];
+
+    final bool? saved = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setDialogState) {
+            return AlertDialog(
+              title: const Text('Edit Jodel'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 60),
+                    child: TextField(
+                      controller: channelController,
+                      decoration: const InputDecoration(
+                        hintText: '@Channel',
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(minHeight: 60),
+                    child: TextField(
+                      controller: contentController,
+                      autofocus: true,
+                      decoration: const InputDecoration(
+                        hintText: '#GoodVibesOnly',
+                        contentPadding: EdgeInsets.symmetric(vertical: 15.0),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Colour', style: TextStyle(fontSize: 13, color: Colors.grey)),
+                  ),
+                  const SizedBox(height: 8),
+                  _ColorPicker(
+                    colors: _colors,
+                    selected: selectedColor,
+                    onSelected: (color) {
+                      HapticFeedback.selectionClick();
+                      setDialogState(() => selectedColor = color);
+                    },
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, false),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    if (contentController.text.isNotEmpty && channelController.text.isNotEmpty) {
+                      Navigator.pop(context, true);
+                    }
+                  },
+                  child: const Text('Save'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (saved == true) {
+      final updated = note.copyWith(
+        content: contentController.text,
+        channel: channelController.text,
+        color: selectedColor,
+      );
+      try {
+        await ref.read(notesProvider.notifier).updateNote(updated);
+      } catch (e) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Could not update Jodel: $e')),
+        );
+      }
+    }
+  }
+
   void incrementKarma(String id) {
     HapticFeedback.lightImpact(); // Vibcoating
     ref.read(notesProvider.notifier).voteNote(id, 1);
@@ -193,6 +287,12 @@ class _NotePageState extends ConsumerState<NotePage> {
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
+                      IconButton(
+                        icon: const FaIcon(FontAwesomeIcons.penToSquare),
+                        onPressed: () => _showEditNoteDialog(note),
+                        color: Colors.black,
+                        tooltip: 'Edit',
+                      ),
                       IconButton(
                         icon: const FaIcon(FontAwesomeIcons.angleUp),
                         onPressed: () => incrementKarma(note.id),

@@ -61,6 +61,27 @@ class NoteListNotifier extends AsyncNotifier<List<Note>> {
     }
   }
 
+  Future<void> updateNote(Note updated) async {
+    final repository = ref.read(noteRepositoryProvider);
+    final currentNotes = state.value ?? [];
+    final noteIndex = currentNotes.indexWhere((n) => n.id == updated.id);
+    if (noteIndex == -1) return;
+
+    final previous = currentNotes[noteIndex];
+    // Optimistic update: swap the note in the UI immediately...
+    final optimistic = List<Note>.from(currentNotes)..[noteIndex] = updated;
+    state = AsyncValue.data(optimistic);
+    try {
+      // ...then persist through the backend (PUT /notes/{id}).
+      await repository.updateNote(updated);
+    } catch (e) {
+      // Backend refused -> roll back to the previous state and let the UI know.
+      final rollback = List<Note>.from(currentNotes)..[noteIndex] = previous;
+      state = AsyncValue.data(rollback);
+      rethrow;
+    }
+  }
+
   Future<void> voteNote(String id, int change) async {
     final repository = ref.read(noteRepositoryProvider);
     final currentNotes = state.value ?? [];
